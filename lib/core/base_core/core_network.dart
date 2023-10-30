@@ -1,0 +1,3 @@
+class FirebaseCoreNetwork {
+  void initialize() {}
+}
