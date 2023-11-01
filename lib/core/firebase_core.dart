@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/auth/auth_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -12,6 +14,7 @@ const storage = FlutterSecureStorage();
 
 class FirebaseCore {
   Future<void> initialize() async {
+    await FirebaseCoreNetwork().initialize();
     await updateUserID();
     await updateUser();
   }
@@ -86,7 +89,9 @@ class FirebaseCore {
       'token': deviceToken,
       'expiration': expiration,
       'userPlatformDetails': userPlatformDetails,
-      'availableCloudStorageMB': 0,
+      'availableCloudStorageMB': BlocProvider.of<FirebaseCoreNetwokBloc>(
+        NavigationService.navigatorKey.currentContext!,
+      ).getDefaulStorageMB(),
     };
     await FirebaseFirestore.instance
         .collection('users')

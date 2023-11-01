@@ -6,6 +6,10 @@ import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.d
 
 class FirebaseCoreNetwork {
   Future<void> initialize() async {
+    await getSettingsCollectionFromFirebase();
+  }
+
+  Future<void> getSettingsCollectionFromFirebase() async {
     final collectionuser =
         FirebaseFirestore.instance.collection('settings').doc('settings');
     final docSnapshotuser = await collectionuser.get();

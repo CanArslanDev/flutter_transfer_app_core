@@ -22,6 +22,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.google.gms.google-services'
 android {
     namespace "com.example.flutter_fast_transfer_firebase_core"
     compileSdkVersion flutter.compileSdkVersion
@@ -49,6 +50,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {

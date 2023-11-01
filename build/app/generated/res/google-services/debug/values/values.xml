@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">760203020141</string>
+    <string name="google_api_key" translatable="false">AIzaSyCjLnKKmFv2EYF8aogxpA1yDRNYF4fEjO0</string>
+    <string name="google_app_id" translatable="false">1:760203020141:android:6a9968d80c910994b0bc64</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCjLnKKmFv2EYF8aogxpA1yDRNYF4fEjO0</string>
+    <string name="google_storage_bucket" translatable="false">flutter-fast-transfer.appspot.com</string>
+    <string name="project_id" translatable="false">flutter-fast-transfer</string>
+</resources>

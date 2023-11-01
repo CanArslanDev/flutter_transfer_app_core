@@ -24,6 +24,7 @@ class TestPage extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text('STATUS:'),
                 Text('device id: ${coreState.deviceID}'),
                 Text('expiration: ${coreState.expiration}'),
                 Text(

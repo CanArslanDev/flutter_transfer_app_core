@@ -14,12 +14,16 @@ class FirebaseCoreNetwokBloc extends Cubit<FirebaseCoreNetworkModel> {
   ) {
     emit(
       state.copyWith(
-        defaultCloudStorageMB: modelMap!['defaultCloudStorageMB'] as int,
+        defaultCloudStorageMB: modelMap!['defaultCloudStorageMB'] as double,
       ),
     );
   }
 
   void getModel() {
     emit(state);
+  }
+
+  double getDefaulStorageMB() {
+    return state.defaultCloudStorageMB;
   }
 }

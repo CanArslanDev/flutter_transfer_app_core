@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "760203020141",
+    "project_id": "flutter-fast-transfer",
+    "storage_bucket": "flutter-fast-transfer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760203020141:android:6a9968d80c910994b0bc64",
+        "android_client_info": {
+          "package_name": "com.example.flutter_fast_transfer_firebase_core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjLnKKmFv2EYF8aogxpA1yDRNYF4fEjO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

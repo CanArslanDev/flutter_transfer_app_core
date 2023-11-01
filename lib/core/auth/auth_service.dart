@@ -11,6 +11,7 @@ class FirebaseAuthService {
       await FirebaseCore().setUserBlocDataUsersCollection(deviceToken);
     } else {
       await FirebaseCore().updateDataUsersCollection(deviceToken);
+      await FirebaseCore().setUserBlocDataUsersCollection(deviceToken);
     }
     return true;
   }

@@ -2,10 +2,10 @@ class FirebaseCoreNetworkModel {
   FirebaseCoreNetworkModel({
     required this.defaultCloudStorageMB,
   });
-  int defaultCloudStorageMB;
+  double defaultCloudStorageMB;
 
   FirebaseCoreNetworkModel copyWith({
-    int? defaultCloudStorageMB,
+    double? defaultCloudStorageMB,
   }) {
     return FirebaseCoreNetworkModel(
       defaultCloudStorageMB:

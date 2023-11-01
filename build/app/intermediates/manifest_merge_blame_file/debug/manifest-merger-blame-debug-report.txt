@@ -1,0 +1,147 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.flutter_fast_transfer_firebase_core"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+9        android:targetSdkVersion="33" />
+10    <!--
+11         The INTERNET permission is required for development. Specifically,
+12         the Flutter tool needs it to communicate with the running application
+13         to allow setting breakpoints, to provide hot reload, etc.
+14    -->
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\android\app\src\debug\AndroidManifest.xml:6:22-64
+16    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+17    <!-- <uses-sdk android:minSdkVersion="14" /> -->
+18    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+18-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:10:5-79
+18-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:10:22-76
+19
+20    <application
+21        android:name="android.app.Application"
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.6.0] C:\Users\Can.Arslan\.gradle\caches\transforms-3\9cf67005fa58b8bb7520b3a8fa9a5b67\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
+23        android:debuggable="true"
+24        android:icon="@mipmap/ic_launcher"
+25        android:label="flutter_fast_transfer_firebase_core" >
+26        <activity
+27            android:name="com.example.flutter_fast_transfer_firebase_core.MainActivity"
+28            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+29            android:exported="true"
+30            android:hardwareAccelerated="true"
+31            android:launchMode="singleTop"
+32            android:theme="@style/LaunchTheme"
+33            android:windowSoftInputMode="adjustResize" >
+34
+35            <!--
+36                 Specifies an Android theme to apply to this Activity as soon as
+37                 the Android process has started. This theme is visible to the user
+38                 while the Flutter UI initializes. After that, this theme continues
+39                 to determine the Window background behind the Flutter UI.
+40            -->
+41            <meta-data
+42                android:name="io.flutter.embedding.android.NormalTheme"
+43                android:resource="@style/NormalTheme" />
+44
+45            <intent-filter>
+46                <action android:name="android.intent.action.MAIN" />
+47
+48                <category android:name="android.intent.category.LAUNCHER" />
+49            </intent-filter>
+50        </activity>
+51        <!--
+52             Don't delete the meta-data below.
+53             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+54        -->
+55        <meta-data
+56            android:name="flutterEmbedding"
+57            android:value="2" />
+58
+59        <service
+59-->[:firebase_storage] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
+60            android:name="com.google.firebase.components.ComponentDiscoveryService"
+60-->[:firebase_storage] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:18-89
+61            android:directBootAware="true"
+61-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:34:13-43
+62            android:exported="false" >
+62-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:16:13-37
+63            <meta-data
+63-->[:firebase_storage] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+64                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
+64-->[:firebase_storage] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-126
+65                android:value="com.google.firebase.components.ComponentRegistrar" />
+65-->[:firebase_storage] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+66            <meta-data
+66-->[:cloud_firestore] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+67                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+67-->[:cloud_firestore] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-134
+68                android:value="com.google.firebase.components.ComponentRegistrar" />
+68-->[:cloud_firestore] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+69            <meta-data
+69-->[:firebase_core] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+70                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+70-->[:firebase_core] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
+71                android:value="com.google.firebase.components.ComponentRegistrar" />
+71-->[:firebase_core] C:\Users\Can.Arslan\Documents\GitHub\flutter_transfer_app_core\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+72            <meta-data
+72-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:17:13-19:85
+73                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+73-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:18:17-111
+74                android:value="com.google.firebase.components.ComponentRegistrar" />
+74-->[com.google.firebase:firebase-firestore:24.8.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\267346c76e1025d28ea6cd04abadc8a6\transformed\jetified-firebase-firestore-24.8.1\AndroidManifest.xml:19:17-82
+75            <meta-data
+75-->[com.google.firebase:firebase-storage:20.2.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\fad11b2112c5bb5e9bbb67dfca7952e4\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:32:13-34:85
+76                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+76-->[com.google.firebase:firebase-storage:20.2.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\fad11b2112c5bb5e9bbb67dfca7952e4\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:33:17-107
+77                android:value="com.google.firebase.components.ComponentRegistrar" />
+77-->[com.google.firebase:firebase-storage:20.2.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\fad11b2112c5bb5e9bbb67dfca7952e4\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:34:17-82
+78        </service>
+79
+80        <uses-library
+80-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+81            android:name="androidx.window.extensions"
+81-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+82            android:required="false" />
+82-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+83        <uses-library
+83-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+84            android:name="androidx.window.sidecar"
+84-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+85            android:required="false" />
+85-->[androidx.window:window:1.0.0-beta04] C:\Users\Can.Arslan\.gradle\caches\transforms-3\126291faa35cff61152659b65ca99f95\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+86
+87        <provider
+87-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:25:9-30:39
+88            android:name="com.google.firebase.provider.FirebaseInitProvider"
+88-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:26:13-77
+89            android:authorities="com.example.flutter_fast_transfer_firebase_core.firebaseinitprovider"
+89-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:27:13-72
+90            android:directBootAware="true"
+90-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:28:13-43
+91            android:exported="false"
+91-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:29:13-37
+92            android:initOrder="100" />
+92-->[com.google.firebase:firebase-common:20.3.3] C:\Users\Can.Arslan\.gradle\caches\transforms-3\c8e62f8fab62acdbf8ee6ef0614eee4e\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:30:13-36
+93
+94        <activity
+94-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\af66a4fd5422eab999ceb7d5a3b254b4\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+95            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+95-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\af66a4fd5422eab999ceb7d5a3b254b4\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+96            android:exported="false"
+96-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\af66a4fd5422eab999ceb7d5a3b254b4\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+97            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+97-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Can.Arslan\.gradle\caches\transforms-3\af66a4fd5422eab999ceb7d5a3b254b4\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+98
+99        <meta-data
+99-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Can.Arslan\.gradle\caches\transforms-3\ee72ad10c30b2bccce8302478c03bd3d\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+100            android:name="com.google.android.gms.version"
+100-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Can.Arslan\.gradle\caches\transforms-3\ee72ad10c30b2bccce8302478c03bd3d\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+101            android:value="@integer/google_play_services_version" />
+101-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Can.Arslan\.gradle\caches\transforms-3\ee72ad10c30b2bccce8302478c03bd3d\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+102    </application>
+103
+104</manifest>

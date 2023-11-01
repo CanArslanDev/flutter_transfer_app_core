@@ -10,13 +10,13 @@ class UserModel {
   String deviceID;
   Map<String, dynamic> userPlatformDetails;
   Timestamp expiration;
-  int availableCloudStorageMB;
+  double availableCloudStorageMB;
 
   UserModel copyWith({
     String? deviceID,
     Map<String, dynamic>? userPlatformDetails,
     Timestamp? expiration,
-    int? availableCloudStorageMB,
+    double? availableCloudStorageMB,
   }) {
     return UserModel(
       deviceID: deviceID ?? this.deviceID,
