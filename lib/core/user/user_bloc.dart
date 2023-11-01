@@ -28,7 +28,8 @@ class UserBloc extends Cubit<UserModel> {
         expiration: modelMap['expiration'] as Timestamp,
         userPlatformDetails:
             modelMap['userPlatformDetails'] as Map<String, dynamic>,
-        availableCloudStorageMB: modelMap['availableCloudStorageMB'] as double,
+        availableCloudStorageMB:
+            double.parse(modelMap['availableCloudStorageMB'].toString()),
       ),
     );
   }

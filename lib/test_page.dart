@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/core_network_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
@@ -18,21 +18,21 @@ class TestPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
-        child: Multi2BlocBuilder<UserBloc, UserModel, FirebaseCoreNetwokBloc,
-            FirebaseCoreNetworkModel>(
-          builder: (coreContext, coreState, networkState) {
+        child: Multi2BlocBuilder<UserBloc, UserModel, FirebaseCoreBloc,
+            FirebaseCoreModel>(
+          builder: (coreContext, userState, coreState) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('STATUS:'),
-                Text('device id: ${coreState.deviceID}'),
-                Text('expiration: ${coreState.expiration}'),
+                Text('status ${coreState.status}'),
+                Text('device id: ${userState.deviceID}'),
+                Text('expiration: ${userState.expiration}'),
                 Text(
-                  '''availableCloudStorageMB: ${coreState.availableCloudStorageMB}''',
+                  '''availableCloudStorageMB: ${userState.availableCloudStorageMB}''',
                 ),
-                Text('userPlatformDetails: ${coreState.userPlatformDetails}'),
+                Text('userPlatformDetails: ${userState.userPlatformDetails}'),
                 Text(
-                  'defaultCloudStorageMB: ${networkState.defaultCloudStorageMB}',
+                  '''defaultCloudStorageMB: ${coreState.defaultCloudStorageMB}''',
                 ),
                 ElevatedButton(
                   onPressed: () {
