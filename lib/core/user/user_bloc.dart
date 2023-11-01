@@ -18,17 +18,17 @@ class UserBloc extends Cubit<UserModel> {
   }
 
   void setModel(
-    String? deviceID,
-    Timestamp expiration,
-    Map<String, dynamic> userPlatformDetails,
-    int availableCloudStorageMB,
+    Map<String, dynamic>? modelMap,
   ) {
     emit(
       state.copyWith(
-        deviceID: deviceID,
-        expiration: expiration,
-        userPlatformDetails: userPlatformDetails,
-        availableCloudStorageMB: availableCloudStorageMB,
+        deviceID: (modelMap!['deviceID'] != null)
+            ? modelMap['deviceID'] as String
+            : null,
+        expiration: modelMap['expiration'] as Timestamp,
+        userPlatformDetails:
+            modelMap['userPlatformDetails'] as Map<String, dynamic>,
+        availableCloudStorageMB: modelMap['availableCloudStorageMB'] as int,
       ),
     );
   }

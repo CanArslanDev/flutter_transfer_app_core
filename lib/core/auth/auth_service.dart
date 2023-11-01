@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/core_system.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
 class FirebaseAuthService {
