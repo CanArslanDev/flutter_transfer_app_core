@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_uploading_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 
 class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
@@ -12,6 +13,10 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
             userID: '',
             status: FirebaseSendFileRequestEnum.stable,
             errorMessage: '',
+            uploadingStatus: FirebaseSendFileUploadingEnum.stable,
+            fileTotalSpaceAsKB: 0,
+            fileNowSpaceAsKB: 0,
+            userDetails: {},
           ),
         );
 
