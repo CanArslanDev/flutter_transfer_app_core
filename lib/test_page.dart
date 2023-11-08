@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/core_network_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/core_network_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_2_bloc_builder.dart';
 
 class TestPage extends StatelessWidget {
@@ -52,6 +53,26 @@ class TestPage extends StatelessWidget {
                   },
                   child: const Text('initalize core network'),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                ElevatedButton(
+                  onPressed: () async {
+await Navigator.push(
+    context,
+    MaterialPageRoute<dynamic>(builder: (context) => const SendPage()),
+  );
+                  },
+                  child: const Text('send page'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                  },
+                  child: const Text('receive page'),
+                ),
+                  ],
+                )
               ],
             );
           },

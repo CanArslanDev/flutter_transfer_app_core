@@ -1,0 +1,17 @@
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
+
+class FirebaseSendFileModel {
+  FirebaseSendFileModel({
+    required this.findUserName,
+  });
+  String findUserName;
+
+  FirebaseSendFileModel copyWith({
+    String? findUserName,
+  }) {
+    return FirebaseSendFileModel(
+      findUserName:
+          findUserName ?? this.findUserName,
+    );
+  }
+}

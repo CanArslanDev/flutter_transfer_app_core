@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/auth/auth_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -89,6 +89,7 @@ class FirebaseCore {
     final userPlatformDetails = await FirebaseCoreSystem().deviceDetailsAsMap();
     final expiration = await FirebaseCore().getServerTimestamp();
     final userData = <String, dynamic>{
+      'username': 'User',
       'token': deviceToken,
       'expiration': expiration,
       'userPlatformDetails': userPlatformDetails,
