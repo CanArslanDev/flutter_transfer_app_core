@@ -14,6 +14,7 @@ import 'package:ntp/ntp.dart';
 const storage = FlutterSecureStorage();
 
 class FirebaseCore {
+  final _firebase=FirebaseFirestore.instance;
   Future<void> initialize() async {
     FirebaseCoreSystem().setStatus(FirebaseCoreStatus.loading);
     await FirebaseCoreNetwork().initialize();
@@ -53,6 +54,11 @@ class FirebaseCore {
     }
   }
 
+Future<bool> checkUserIDForIdsCollection(String dataName) async {
+  final snapshot = await _firebase.collection('ids').doc(dataName).get();
+  return snapshot.exists;
+}
+
   Future<void> updateDataIDCollection(String userID) async {
     final deviceToken = await FirebaseCoreSystem().getDeviceToken();
     final userPlatformDetails = await FirebaseCoreSystem().deviceDetailsAsMap();
@@ -62,7 +68,7 @@ class FirebaseCore {
       'expiration': expiration,
       'userPlatformDetails': userPlatformDetails,
     };
-    await FirebaseFirestore.instance
+    await _firebase
         .collection('ids')
         .doc(userID)
         .set(userData);
@@ -70,7 +76,7 @@ class FirebaseCore {
 
   Future<void> setUserBlocDataUsersCollection(String id) async {
     final collectionuser =
-        FirebaseFirestore.instance.collection('users').doc(id);
+        _firebase.collection('users').doc(id);
     final docSnapshotuser = await collectionuser.get();
     final doc = docSnapshotuser.data();
     try {
@@ -97,7 +103,7 @@ class FirebaseCore {
         NavigationService.navigatorKey.currentContext!,
       ).getDefaulStorageMB(),
     };
-    await FirebaseFirestore.instance
+    await _firebase
         .collection('users')
         .doc(userID)
         .set(userData);
