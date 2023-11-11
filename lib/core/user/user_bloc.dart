@@ -6,11 +6,11 @@ class UserBloc extends Cubit<UserModel> {
   UserBloc()
       : super(
           UserModel(
-            deviceID: '',
-            userPlatformDetails: {},
-            expiration: Timestamp.now(),
-            availableCloudStorageMB: 0,
-          ),
+              deviceID: '',
+              userPlatformDetails: {},
+              expiration: Timestamp.now(),
+              availableCloudStorageMB: 0,
+              token: ''),
         );
 
   void setID(String deviceID) {
@@ -30,8 +30,17 @@ class UserBloc extends Cubit<UserModel> {
             modelMap['userPlatformDetails'] as Map<String, dynamic>,
         availableCloudStorageMB:
             double.parse(modelMap['availableCloudStorageMB'].toString()),
+        token: modelMap['token'] as String,
       ),
     );
+  }
+
+  void listenUserDataFromFirebase() {
+    final DocumentReference reference =
+        FirebaseFirestore.instance.collection('users').doc(state.token);
+    reference.snapshots().listen((querySnapshot) {
+      print(querySnapshot.data());
+    });
   }
 
   void getModel() {
@@ -40,5 +49,9 @@ class UserBloc extends Cubit<UserModel> {
 
   String getID() {
     return state.deviceID;
+  }
+
+  String getToken() {
+    return state.token;
   }
 }

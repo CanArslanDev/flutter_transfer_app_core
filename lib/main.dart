@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserBloc>(create: (context) => UserBloc()),
         BlocProvider<FirebaseSendFileBloc>(
           create: (context) => FirebaseSendFileBloc(),
-          ),
+        ),
         BlocProvider<FirebaseCoreBloc>(
           create: (context) => FirebaseCoreBloc(),
         ),

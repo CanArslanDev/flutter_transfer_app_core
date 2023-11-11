@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/core_network_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/core_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';

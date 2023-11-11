@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -50,6 +50,7 @@ class FirebaseCoreSystem {
       final doc = docSnapshotuser.data();
       if (doc!['token'] != null &&
           doc['expiration'] != null &&
+          doc['appID'] != null &&
           doc['availableCloudStorageMB'] != null) {
         return true;
       } else {

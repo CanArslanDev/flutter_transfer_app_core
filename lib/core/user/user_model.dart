@@ -6,24 +6,27 @@ class UserModel {
     required this.userPlatformDetails,
     required this.expiration,
     required this.availableCloudStorageMB,
+    required this.token,
   });
   String deviceID;
   Map<String, dynamic> userPlatformDetails;
   Timestamp expiration;
   double availableCloudStorageMB;
+  String token;
 
-  UserModel copyWith({
-    String? deviceID,
-    Map<String, dynamic>? userPlatformDetails,
-    Timestamp? expiration,
-    double? availableCloudStorageMB,
-  }) {
+  UserModel copyWith(
+      {String? deviceID,
+      Map<String, dynamic>? userPlatformDetails,
+      Timestamp? expiration,
+      double? availableCloudStorageMB,
+      String? token}) {
     return UserModel(
       deviceID: deviceID ?? this.deviceID,
       userPlatformDetails: userPlatformDetails ?? this.userPlatformDetails,
       expiration: expiration ?? this.expiration,
       availableCloudStorageMB:
           availableCloudStorageMB ?? this.availableCloudStorageMB,
+      token: token ?? this.token,
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/auth/auth_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/network/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -14,12 +14,13 @@ import 'package:ntp/ntp.dart';
 const storage = FlutterSecureStorage();
 
 class FirebaseCore {
-  final _firebase=FirebaseFirestore.instance;
+  final _firebase = FirebaseFirestore.instance;
   Future<void> initialize() async {
     FirebaseCoreSystem().setStatus(FirebaseCoreStatus.loading);
     await FirebaseCoreNetwork().initialize();
     await updateUserID();
     await updateUser();
+    FirebaseAuthService().startListenUser();
     FirebaseCoreSystem().setStatus(FirebaseCoreStatus.stable);
   }
 
@@ -54,10 +55,10 @@ class FirebaseCore {
     }
   }
 
-Future<bool> checkUserIDForIdsCollection(String dataName) async {
-  final snapshot = await _firebase.collection('ids').doc(dataName).get();
-  return snapshot.exists;
-}
+  Future<bool> checkUserIDForIdsCollection(String dataName) async {
+    final snapshot = await _firebase.collection('ids').doc(dataName).get();
+    return snapshot.exists;
+  }
 
   Future<void> updateDataIDCollection(String userID) async {
     final deviceToken = await FirebaseCoreSystem().getDeviceToken();
@@ -68,15 +69,11 @@ Future<bool> checkUserIDForIdsCollection(String dataName) async {
       'expiration': expiration,
       'userPlatformDetails': userPlatformDetails,
     };
-    await _firebase
-        .collection('ids')
-        .doc(userID)
-        .set(userData);
+    await _firebase.collection('ids').doc(userID).set(userData);
   }
 
   Future<void> setUserBlocDataUsersCollection(String id) async {
-    final collectionuser =
-        _firebase.collection('users').doc(id);
+    final collectionuser = _firebase.collection('users').doc(id);
     final docSnapshotuser = await collectionuser.get();
     final doc = docSnapshotuser.data();
     try {
@@ -94,7 +91,11 @@ Future<bool> checkUserIDForIdsCollection(String dataName) async {
     final deviceToken = await FirebaseCoreSystem().getDeviceToken();
     final userPlatformDetails = await FirebaseCoreSystem().deviceDetailsAsMap();
     final expiration = await FirebaseCore().getServerTimestamp();
+    final appID = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).getID();
     final userData = <String, dynamic>{
+      'appID': appID,
       'username': 'User',
       'token': deviceToken,
       'expiration': expiration,
@@ -103,9 +104,6 @@ Future<bool> checkUserIDForIdsCollection(String dataName) async {
         NavigationService.navigatorKey.currentContext!,
       ).getDefaulStorageMB(),
     };
-    await _firebase
-        .collection('users')
-        .doc(userID)
-        .set(userData);
+    await _firebase.collection('users').doc(userID).set(userData);
   }
 }
