@@ -8,6 +8,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_2_bloc_builder.dart';
+import 'package:flutter_fast_transfer_firebase_core/utils/receive_top_bar.dart';
 
 class TestPage extends StatelessWidget {
   const TestPage({super.key});
@@ -15,6 +16,9 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: const FloatingActionButton(
+        onPressed: InAppNotifications.receiveTopBar,
+      ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
@@ -56,24 +60,23 @@ class TestPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
-                ElevatedButton(
-                  onPressed: () async {
-await Navigator.push(
-    context,
-    MaterialPageRoute<dynamic>(builder: (context) => const SendPage()),
-  );
-  
-                  },
-                  child: const Text('send page'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                  },
-                  child: const Text('receive page'),
-                ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (context) => const SendPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('send page'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {},
+                      child: const Text('receive page'),
+                    ),
                   ],
-                )
+                ),
               ],
             );
           },

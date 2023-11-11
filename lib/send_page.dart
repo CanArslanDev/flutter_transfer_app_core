@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
 
 class SendPage extends StatelessWidget {
   const SendPage({super.key});
@@ -41,11 +41,12 @@ class SendPage extends StatelessWidget {
                           ? 1
                           : 0,
                   child: const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.grey,
-                      )),
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
                 stateWidget(state.status, state.errorMessage),
                 const SizedBox(),
