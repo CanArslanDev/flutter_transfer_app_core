@@ -50,7 +50,8 @@ class FirebaseCoreSystem {
       final doc = docSnapshotuser.data();
       if (doc!['token'] != null &&
           doc['expiration'] != null &&
-          doc['appID'] != null &&
+          doc['connectionID'] != null &&
+          doc['connectionRequest'] != null &&
           doc['availableCloudStorageMB'] != null) {
         return true;
       } else {

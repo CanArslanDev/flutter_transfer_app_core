@@ -91,11 +91,12 @@ class FirebaseCore {
     final deviceToken = await FirebaseCoreSystem().getDeviceToken();
     final userPlatformDetails = await FirebaseCoreSystem().deviceDetailsAsMap();
     final expiration = await FirebaseCore().getServerTimestamp();
-    final appID = BlocProvider.of<UserBloc>(
+    final connectionID = BlocProvider.of<UserBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).getID();
     final userData = <String, dynamic>{
-      'appID': appID,
+      'connectionRequest': <Map<dynamic, dynamic>>{},
+      'connectionID': connectionID,
       'username': 'User',
       'token': deviceToken,
       'expiration': expiration,

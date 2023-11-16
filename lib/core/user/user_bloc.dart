@@ -10,7 +10,8 @@ class UserBloc extends Cubit<UserModel> {
               userPlatformDetails: {},
               expiration: Timestamp.now(),
               availableCloudStorageMB: 0,
-              token: ''),
+              token: '',
+              connectionRequest: []),
         );
 
   void setID(String deviceID) {
@@ -39,7 +40,13 @@ class UserBloc extends Cubit<UserModel> {
     final DocumentReference reference =
         FirebaseFirestore.instance.collection('users').doc(state.token);
     reference.snapshots().listen((querySnapshot) {
-      print(querySnapshot.data());
+      final userFirebaseData = querySnapshot.data()! as Map<dynamic, dynamic>;
+      emit(
+        state.copyWith(
+          connectionRequest:
+              userFirebaseData['connectionRequest'] as List<dynamic>,
+        ),
+      );
     });
   }
 

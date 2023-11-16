@@ -6,6 +6,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/fire
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_2_bloc_builder.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/receive_top_bar.dart';
@@ -72,7 +73,14 @@ class TestPage extends StatelessWidget {
                       child: const Text('send page'),
                     ),
                     ElevatedButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (context) => const ReceivePage(),
+                          ),
+                        );
+                      },
                       child: const Text('receive page'),
                     ),
                   ],
