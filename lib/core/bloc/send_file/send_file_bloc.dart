@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_uploading_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
 class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   FirebaseSendFileBloc()
@@ -28,6 +32,28 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
         state.copyWith(
           status: FirebaseSendFileRequestEnum.error,
           errorMessage: 'User ID is empty',
+        ),
+      );
+      return false;
+    } else if (BlocProvider.of<FirebaseCoreBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).getStatus() ==
+        FirebaseCoreStatus.loading) {
+      emit(
+        state.copyWith(
+          status: FirebaseSendFileRequestEnum.error,
+          errorMessage: 'Loading services, please wait and try again',
+        ),
+      );
+      return false;
+    } else if (BlocProvider.of<UserBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).getDeviceID() ==
+        userID) {
+      emit(
+        state.copyWith(
+          status: FirebaseSendFileRequestEnum.error,
+          errorMessage: 'You cannot send files to yourself',
         ),
       );
       return false;

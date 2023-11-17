@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 
@@ -42,6 +43,14 @@ class FirebaseCoreSystem {
     }
   }
 
+  Future<String> getUserUsernameFromUsersCollection(String id) async {
+    final collectionuser =
+        FirebaseFirestore.instance.collection('users').doc(id);
+    final docSnapshotuser = await collectionuser.get();
+    final doc = docSnapshotuser.data();
+    return doc!['username'] as String;
+  }
+
   Future<bool> getUserFromUsersCollection(String id) async {
     try {
       final collectionuser =
@@ -52,6 +61,7 @@ class FirebaseCoreSystem {
           doc['expiration'] != null &&
           doc['connectionID'] != null &&
           doc['connectionRequest'] != null &&
+          doc['previousConnectionRequest'] != null &&
           doc['availableCloudStorageMB'] != null) {
         return true;
       } else {
@@ -120,5 +130,27 @@ class FirebaseCoreSystem {
     } else {
       return 'error';
     }
+  }
+
+  Future<void> setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
+    String connectionID,
+    Map<dynamic, dynamic> connectionData,
+  ) async {
+    final connectionRequestList = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).getConnectionRequest();
+    final previousConnectionRequestList = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).getPreviousConnectionRequest();
+    final docID = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).getToken();
+    connectionRequestList
+        .removeWhere((map) => map['connectionID'] == connectionID);
+    previousConnectionRequestList.add(connectionData);
+    await FirebaseFirestore.instance.collection('users').doc(docID).update({
+      'connectionRequest': connectionRequestList,
+      'previousConnectionRequest': previousConnectionRequestList,
+    });
   }
 }

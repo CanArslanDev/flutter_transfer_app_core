@@ -6,12 +6,14 @@ class UserBloc extends Cubit<UserModel> {
   UserBloc()
       : super(
           UserModel(
-              deviceID: '',
-              userPlatformDetails: {},
-              expiration: Timestamp.now(),
-              availableCloudStorageMB: 0,
-              token: '',
-              connectionRequest: []),
+            deviceID: '',
+            userPlatformDetails: {},
+            expiration: Timestamp.now(),
+            availableCloudStorageMB: 0,
+            token: '',
+            connectionRequest: [],
+            previousConnectionRequest: [],
+          ),
         );
 
   void setID(String deviceID) {
@@ -41,20 +43,49 @@ class UserBloc extends Cubit<UserModel> {
         FirebaseFirestore.instance.collection('users').doc(state.token);
     reference.snapshots().listen((querySnapshot) {
       final userFirebaseData = querySnapshot.data()! as Map<dynamic, dynamic>;
+      final connectionRequest = <Map<dynamic, dynamic>>[];
+      final previousConnectionRequest = <Map<dynamic, dynamic>>[];
+      for (final connectionData
+          in userFirebaseData['connectionRequest'] as List<dynamic>) {
+        print(connectionData);
+        connectionRequest.add(connectionData as Map<dynamic, dynamic>);
+      }
+      for (final previousConnectionData
+          in userFirebaseData['previousConnectionRequest'] as List<dynamic>) {
+        previousConnectionRequest
+            .add(previousConnectionData as Map<dynamic, dynamic>);
+      }
       emit(
         state.copyWith(
-          connectionRequest:
-              userFirebaseData['connectionRequest'] as List<dynamic>,
+          connectionRequest: connectionRequest,
+          previousConnectionRequest: previousConnectionRequest,
         ),
       );
     });
   }
 
-  void getModel() {
-    emit(state);
+  UserModel getModel() {
+    return state;
   }
 
-  String getID() {
+  List<Map<dynamic, dynamic>> getConnectionRequest() {
+    return state.connectionRequest;
+  }
+
+  void setConnectionRequest(List<Map<dynamic, dynamic>> connectionRequest) {
+    emit(state.copyWith(connectionRequest: connectionRequest));
+  }
+
+  List<Map<dynamic, dynamic>> getPreviousConnectionRequest() {
+    return state.previousConnectionRequest;
+  }
+
+  void setPreviousConnectionRequest(
+      List<Map<dynamic, dynamic>> previousConnectionRequest) {
+    emit(state.copyWith(previousConnectionRequest: previousConnectionRequest));
+  }
+
+  String getDeviceID() {
     return state.deviceID;
   }
 

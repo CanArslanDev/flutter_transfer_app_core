@@ -8,13 +8,15 @@ class UserModel {
     required this.availableCloudStorageMB,
     required this.token,
     required this.connectionRequest,
+    required this.previousConnectionRequest,
   });
   String deviceID;
   Map<String, dynamic> userPlatformDetails;
   Timestamp expiration;
   double availableCloudStorageMB;
   String token;
-  List<dynamic> connectionRequest;
+  List<Map<dynamic, dynamic>> connectionRequest;
+  List<Map<dynamic, dynamic>> previousConnectionRequest;
 
   UserModel copyWith(
       {String? deviceID,
@@ -22,7 +24,8 @@ class UserModel {
       Timestamp? expiration,
       double? availableCloudStorageMB,
       String? token,
-      List<dynamic>? connectionRequest}) {
+      List<Map<dynamic, dynamic>>? connectionRequest,
+      List<Map<dynamic, dynamic>>? previousConnectionRequest}) {
     return UserModel(
       deviceID: deviceID ?? this.deviceID,
       userPlatformDetails: userPlatformDetails ?? this.userPlatformDetails,
@@ -31,6 +34,8 @@ class UserModel {
           availableCloudStorageMB ?? this.availableCloudStorageMB,
       token: token ?? this.token,
       connectionRequest: connectionRequest ?? this.connectionRequest,
+      previousConnectionRequest:
+          previousConnectionRequest ?? this.previousConnectionRequest,
     );
   }
 }

@@ -93,8 +93,9 @@ class FirebaseCore {
     final expiration = await FirebaseCore().getServerTimestamp();
     final connectionID = BlocProvider.of<UserBloc>(
       NavigationService.navigatorKey.currentContext!,
-    ).getID();
+    ).getDeviceID();
     final userData = <String, dynamic>{
+      'previousConnectionRequest': <Map<dynamic, dynamic>>{},
       'connectionRequest': <Map<dynamic, dynamic>>{},
       'connectionID': connectionID,
       'username': 'User',
@@ -106,5 +107,16 @@ class FirebaseCore {
       ).getDefaulStorageMB(),
     };
     await _firebase.collection('users').doc(userID).set(userData);
+  }
+
+  void refuseUserConnectionRequest(
+    String connectionID,
+    Map<dynamic, dynamic> connectionData,
+  ) {
+    FirebaseCoreSystem()
+        .setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
+      connectionID,
+      connectionData,
+    );
   }
 }
