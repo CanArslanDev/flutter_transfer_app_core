@@ -3,7 +3,11 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_fil
 
 class FirebaseSendFileModel {
   FirebaseSendFileModel({
-    required this.userID,
+    required this.receiverID,
+    required this.senderID,
+    required this.filesCount,
+    required this.sendSpeed,
+    required this.filesList,
     required this.status,
     required this.errorMessage,
     required this.uploadingStatus,
@@ -11,7 +15,11 @@ class FirebaseSendFileModel {
     required this.fileNowSpaceAsKB,
     required this.userDetails,
   });
-  String userID;
+  String receiverID;
+  String senderID;
+  int filesCount;
+  String sendSpeed;
+  Map<dynamic, dynamic> filesList;
   String errorMessage;
   FirebaseSendFileRequestEnum status;
   FirebaseSendFileUploadingEnum uploadingStatus;
@@ -20,7 +28,11 @@ class FirebaseSendFileModel {
   Map<String, String> userDetails;
 
   FirebaseSendFileModel copyWith({
-    String? userID,
+    String? receiverID,
+    String? senderID,
+    int? filesCount,
+    String? sendSpeed,
+    Map<dynamic, dynamic>? filesList,
     FirebaseSendFileRequestEnum? status,
     String? errorMessage,
     FirebaseSendFileUploadingEnum? uploadingStatus,
@@ -29,7 +41,11 @@ class FirebaseSendFileModel {
     Map<String, String>? userDetails,
   }) {
     return FirebaseSendFileModel(
-      userID: userID ?? this.userID,
+      receiverID: receiverID ?? this.receiverID,
+      senderID: senderID ?? this.senderID,
+      filesCount: filesCount ?? this.filesCount,
+      sendSpeed: sendSpeed ?? this.sendSpeed,
+      filesList: filesList ?? this.filesList,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       uploadingStatus: uploadingStatus ?? this.uploadingStatus,

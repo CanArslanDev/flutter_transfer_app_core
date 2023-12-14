@@ -9,6 +9,9 @@ class UserModel {
     required this.token,
     required this.connectionRequest,
     required this.previousConnectionRequest,
+    required this.sendList,
+    required this.connectedUser,
+    required this.username,
   });
   String deviceID;
   Map<String, dynamic> userPlatformDetails;
@@ -17,15 +20,22 @@ class UserModel {
   String token;
   List<Map<dynamic, dynamic>> connectionRequest;
   List<Map<dynamic, dynamic>> previousConnectionRequest;
+  List<Map<dynamic, dynamic>> sendList;
+  Map<dynamic, dynamic> connectedUser;
+  String username;
 
-  UserModel copyWith(
-      {String? deviceID,
-      Map<String, dynamic>? userPlatformDetails,
-      Timestamp? expiration,
-      double? availableCloudStorageMB,
-      String? token,
-      List<Map<dynamic, dynamic>>? connectionRequest,
-      List<Map<dynamic, dynamic>>? previousConnectionRequest}) {
+  UserModel copyWith({
+    String? deviceID,
+    Map<String, dynamic>? userPlatformDetails,
+    Timestamp? expiration,
+    double? availableCloudStorageMB,
+    String? token,
+    List<Map<dynamic, dynamic>>? connectionRequest,
+    List<Map<dynamic, dynamic>>? previousConnectionRequest,
+    List<Map<dynamic, dynamic>>? sendList,
+    Map<dynamic, dynamic>? connectedUser,
+    String? username,
+  }) {
     return UserModel(
       deviceID: deviceID ?? this.deviceID,
       userPlatformDetails: userPlatformDetails ?? this.userPlatformDetails,
@@ -36,6 +46,9 @@ class UserModel {
       connectionRequest: connectionRequest ?? this.connectionRequest,
       previousConnectionRequest:
           previousConnectionRequest ?? this.previousConnectionRequest,
+      sendList: sendList ?? this.sendList,
+      connectedUser: connectedUser ?? this.connectedUser,
+      username: username ?? this.username,
     );
   }
 }

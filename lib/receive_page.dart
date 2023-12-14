@@ -6,6 +6,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.d
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/file_page.dart';
 
 class ReceivePage extends StatelessWidget {
   const ReceivePage({super.key});
@@ -54,64 +55,69 @@ class ReceivePage extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Card(
-                      child: Container(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 30,
+                      child: GestureDetector(
+                        onTap: () async => FirebaseCore()
+                            .acceptUserConnectionRequest(
+                                state1['connectionID'] as String, state1),
+                        child: SizedBox(
+                          height: 60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 30,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      snapshot.data as String,
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              Row(
                                 children: [
-                                  Text(
-                                    snapshot.data as String,
-                                    style: TextStyle(fontSize: 20),
+                                  GestureDetector(
+                                    onTap: () async => FirebaseCore()
+                                        .refuseUserConnectionRequest(
+                                      state1['connectionID'] as String,
+                                      state1,
+                                    ),
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => FirebaseCore()
-                                      .refuseUserConnectionRequest(
-                                    state1['connectionID'] as String,
-                                    state1,
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                  child: Container(
+                                  Container(
                                     height: 40,
                                     width: 40,
                                     decoration: BoxDecoration(
-                                      color: Colors.red,
+                                      color: Colors.green,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
-                                      Icons.close,
+                                      Icons.check,
                                       color: Colors.white,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

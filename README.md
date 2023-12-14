@@ -1,5 +1,7 @@
 
 ## Yapılacaklar
+ - Receiver için istek kabul edildiğinde file page yönlendilirilecek
+ - Update uyarı sistemi ekleyelim
 
 ## Yapılanlar
 

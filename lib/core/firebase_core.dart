@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/auth/auth_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.d
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/file_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ntp/ntp.dart';
@@ -76,7 +79,18 @@ class FirebaseCore {
     final collectionuser = _firebase.collection('users').doc(id);
     final docSnapshotuser = await collectionuser.get();
     final doc = docSnapshotuser.data();
+    final deviceToken = await FirebaseCoreSystem().getDeviceToken();
     try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(deviceToken)
+          .update({
+        'connectedUser': {
+          'userID': '',
+          'token': '',
+          'username': '',
+        },
+      });
       BlocProvider.of<UserBloc>(
         NavigationService.navigatorKey.currentContext!,
       ).setModel(
@@ -97,6 +111,12 @@ class FirebaseCore {
     final userData = <String, dynamic>{
       'previousConnectionRequest': <Map<dynamic, dynamic>>{},
       'connectionRequest': <Map<dynamic, dynamic>>{},
+      'sendList': <Map<dynamic, dynamic>>{},
+      'connectedUser': {
+        'userID': '',
+        'token': '',
+        'username': '',
+      },
       'connectionID': connectionID,
       'username': 'User',
       'token': deviceToken,
@@ -109,11 +129,54 @@ class FirebaseCore {
     await _firebase.collection('users').doc(userID).set(userData);
   }
 
-  void refuseUserConnectionRequest(
+  Future<void> acceptUserConnectionRequest(
     String connectionID,
     Map<dynamic, dynamic> connectionData,
-  ) {
-    FirebaseCoreSystem()
+  ) async {
+    // await FirebaseCoreSystem()
+    //     .setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
+    //   connectionID,
+    //   connectionData,
+    // );
+
+    final userModel = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).getModel();
+    final connectedUserReceiver = {
+      'token': userModel.token,
+      'userID': userModel.deviceID,
+      'username': userModel.username,
+    };
+    final connectedUserSender = {
+      'token': connectionData['requestUserDeviceToken'],
+      'userID': connectionData['connectionID'],
+      'username': connectionData['username'],
+    };
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel.token)
+        .update({
+      'connectedUser': connectedUserSender,
+    });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(connectionData['requestUserDeviceToken'] as String)
+        .update({
+      'connectedUser': connectedUserReceiver,
+    });
+    await Navigator.push(
+      NavigationService.navigatorKey.currentContext!,
+      MaterialPageRoute<dynamic>(
+        builder: (context) => const FilePage(),
+      ),
+    );
+  }
+
+  Future<void> refuseUserConnectionRequest(
+    String connectionID,
+    Map<dynamic, dynamic> connectionData,
+  ) async {
+    await FirebaseCoreSystem()
         .setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
       connectionID,
       connectionData,
