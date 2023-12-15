@@ -5,6 +5,7 @@ class FirebaseSendFileModel {
   FirebaseSendFileModel({
     required this.receiverID,
     required this.senderID,
+    required this.firebaseDocumentName,
     required this.filesCount,
     required this.sendSpeed,
     required this.filesList,
@@ -17,9 +18,10 @@ class FirebaseSendFileModel {
   });
   String receiverID;
   String senderID;
+  String firebaseDocumentName;
   int filesCount;
   String sendSpeed;
-  Map<dynamic, dynamic> filesList;
+  List<dynamic> filesList;
   String errorMessage;
   FirebaseSendFileRequestEnum status;
   FirebaseSendFileUploadingEnum uploadingStatus;
@@ -30,9 +32,10 @@ class FirebaseSendFileModel {
   FirebaseSendFileModel copyWith({
     String? receiverID,
     String? senderID,
+    String? firebaseDocumentName,
     int? filesCount,
     String? sendSpeed,
-    Map<dynamic, dynamic>? filesList,
+    List<dynamic>? filesList,
     FirebaseSendFileRequestEnum? status,
     String? errorMessage,
     FirebaseSendFileUploadingEnum? uploadingStatus,
@@ -43,6 +46,7 @@ class FirebaseSendFileModel {
     return FirebaseSendFileModel(
       receiverID: receiverID ?? this.receiverID,
       senderID: senderID ?? this.senderID,
+      firebaseDocumentName: firebaseDocumentName ?? this.firebaseDocumentName,
       filesCount: filesCount ?? this.filesCount,
       sendSpeed: sendSpeed ?? this.sendSpeed,
       filesList: filesList ?? this.filesList,

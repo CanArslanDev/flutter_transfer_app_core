@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/auth/auth_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/file_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ntp/ntp.dart';
@@ -148,9 +148,9 @@ class FirebaseCore {
       'username': userModel.username,
     };
     final connectedUserSender = {
-      'token': connectionData['requestUserDeviceToken'],
-      'userID': connectionData['connectionID'],
-      'username': connectionData['username'],
+      'token': connectionData['requestUserDeviceToken'] as String,
+      'userID': connectionData['connectionID'] as String,
+      'username': connectionData['username'] as String,
     };
     await FirebaseFirestore.instance
         .collection('users')
@@ -164,10 +164,23 @@ class FirebaseCore {
         .update({
       'connectedUser': connectedUserReceiver,
     });
+    BlocProvider.of<FirebaseSendFileBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).setConnection(
+      connectionData['connectionID'] as String,
+      userModel.deviceID,
+      connectedUserSender,
+    );
+    await BlocProvider.of<FirebaseSendFileBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).setFirebaseConnectionsCollection();
+    await BlocProvider.of<FirebaseSendFileBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).listenConnection();
     await Navigator.push(
       NavigationService.navigatorKey.currentContext!,
       MaterialPageRoute<dynamic>(
-        builder: (context) => const FilePage(),
+        builder: (context) => const ConnectionPage(),
       ),
     );
   }

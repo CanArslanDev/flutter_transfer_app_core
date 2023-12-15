@@ -18,9 +18,10 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
           FirebaseSendFileModel(
             receiverID: '',
             senderID: '',
+            firebaseDocumentName: '',
             filesCount: 0,
-            sendSpeed: '',
-            filesList: {},
+            sendSpeed: '0',
+            filesList: [],
             status: FirebaseSendFileRequestEnum.stable,
             errorMessage: '',
             uploadingStatus: FirebaseSendFileUploadingEnum.stable,
@@ -29,6 +30,77 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
             userDetails: {},
           ),
         );
+
+  void setConnection(
+    String receiverID,
+    String senderID,
+    Map<String, String> userDetails,
+  ) {
+    emit(
+      state.copyWith(
+          receiverID: receiverID,
+          senderID: senderID,
+          userDetails: userDetails,
+          firebaseDocumentName: '$senderID-$receiverID'),
+    );
+  }
+
+  Future<void> listenConnection() async {
+    final DocumentReference reference = FirebaseFirestore.instance
+        .collection('connections')
+        .doc(state.firebaseDocumentName);
+    reference.snapshots().listen((querySnapshot) {
+      getFirebaseConnectionsCollection(querySnapshot);
+    });
+  }
+
+  Future<void> setFirebaseConnectionsCollection() async {
+    await FirebaseFirestore.instance
+        .collection('connections')
+        .doc(state.firebaseDocumentName)
+        .set({
+      'receiverID': state.receiverID,
+      'senderID': state.senderID,
+      'filesCount': 0,
+      'sendSpeed': '0',
+      'filesList': <Map<dynamic, dynamic>>{},
+      'status': firebaseSendFileRequestEnumToInt(
+        FirebaseSendFileRequestEnum.stable,
+      ),
+      'errorMessage': '',
+      'uploadingStatus': firebaseSendFileUploadingEnumToInt(
+        FirebaseSendFileUploadingEnum.stable,
+      ),
+      'fileTotalSpaceAsKB': 0.0,
+      'fileNowSpaceAsKB': 0.0,
+    });
+  }
+
+  Future<void> getFirebaseConnectionsCollection(
+      DocumentSnapshot<Object?> querySnapshot) async {
+    final connection = querySnapshot.data()! as Map<dynamic, dynamic>;
+    print("1");
+    emit(
+      state.copyWith(
+        receiverID: connection['receiverID'] as String,
+        senderID: connection['senderID'] as String,
+        filesCount: connection['filesCount'] as int,
+        sendSpeed: connection['sendSpeed'] as String,
+        filesList: connection['filesList'] as List<dynamic>,
+        status: intToFirebaseSendFileRequestEnum(
+          connection['status'] as int,
+        ),
+        errorMessage: connection['errorMessage'] as String,
+        uploadingStatus: intToFirebaseSendFileUploadingEnum(
+          connection['uploadingStatus'] as int,
+        ),
+        fileTotalSpaceAsKB:
+            double.parse(connection['fileTotalSpaceAsKB'].toString()),
+        fileNowSpaceAsKB:
+            double.parse(connection['fileNowSpaceAsKB'].toString()),
+      ),
+    );
+  }
 
   bool checkUserID(String userID) {
     if (userID.isEmpty) {
@@ -120,5 +192,75 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
 
   FirebaseSendFileRequestEnum getStatus() {
     return state.status;
+  }
+
+  int firebaseSendFileUploadingEnumToInt(
+    FirebaseSendFileUploadingEnum enumData,
+  ) {
+    switch (enumData) {
+      case FirebaseSendFileUploadingEnum.uploading:
+        return 0;
+      case FirebaseSendFileUploadingEnum.uploadingSuccess:
+        return 1;
+      case FirebaseSendFileUploadingEnum.uploadingFailure:
+        return 2;
+      case FirebaseSendFileUploadingEnum.uploadingCanceled:
+        return 3;
+      case FirebaseSendFileUploadingEnum.error:
+        return 4;
+      case FirebaseSendFileUploadingEnum.stable:
+        return 5;
+    }
+  }
+
+  FirebaseSendFileUploadingEnum intToFirebaseSendFileUploadingEnum(
+    int enumData,
+  ) {
+    switch (enumData) {
+      case 0:
+        return FirebaseSendFileUploadingEnum.uploading;
+      case 1:
+        return FirebaseSendFileUploadingEnum.uploadingSuccess;
+      case 2:
+        return FirebaseSendFileUploadingEnum.uploadingFailure;
+      case 3:
+        return FirebaseSendFileUploadingEnum.uploadingCanceled;
+      case 4:
+        return FirebaseSendFileUploadingEnum.error;
+      case 5:
+        return FirebaseSendFileUploadingEnum.stable;
+    }
+    return FirebaseSendFileUploadingEnum.stable;
+  }
+
+  int firebaseSendFileRequestEnumToInt(FirebaseSendFileRequestEnum enumData) {
+    switch (enumData) {
+      case FirebaseSendFileRequestEnum.stable:
+        return 0;
+      case FirebaseSendFileRequestEnum.connecting:
+        return 1;
+      case FirebaseSendFileRequestEnum.sendedRequest:
+        return 2;
+      case FirebaseSendFileRequestEnum.error:
+        return 3;
+      case FirebaseSendFileRequestEnum.connected:
+        return 4;
+    }
+  }
+
+  FirebaseSendFileRequestEnum intToFirebaseSendFileRequestEnum(int enumData) {
+    switch (enumData) {
+      case 0:
+        return FirebaseSendFileRequestEnum.stable;
+      case 1:
+        return FirebaseSendFileRequestEnum.connecting;
+      case 2:
+        return FirebaseSendFileRequestEnum.sendedRequest;
+      case 3:
+        return FirebaseSendFileRequestEnum.error;
+      case 4:
+        return FirebaseSendFileRequestEnum.connected;
+    }
+    return FirebaseSendFileRequestEnum.stable;
   }
 }

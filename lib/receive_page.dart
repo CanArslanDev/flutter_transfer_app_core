@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/file_page.dart';
 
 class ReceivePage extends StatelessWidget {
   const ReceivePage({super.key});
@@ -28,8 +26,9 @@ class ReceivePage extends StatelessWidget {
           final connectionRequest = doc!['connectionRequest'] as List<dynamic>;
           connectionRequest.add({
             'requestUserDeviceToken':
-                '17424f43da2b63f82faee98d00209a7d4823afab620ec64e0c2dded07ba2b0a3',
-            'connectionID': '123123',
+                'b83f937d71ef9c59b96a4d67779e77bc11d604c6fbf58383ea642e85e7a49c4b',
+            'connectionID': '583249',
+            'username': 'User',
           });
           await FirebaseFirestore.instance
               .collection('users')
@@ -40,10 +39,10 @@ class ReceivePage extends StatelessWidget {
       body: BlocBuilder<UserBloc, UserModel>(
         builder: (context, state) => Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
-                "Connection Request",
+              child: Text(
+                'Connection Request',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -56,9 +55,11 @@ class ReceivePage extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Card(
                       child: GestureDetector(
-                        onTap: () async => FirebaseCore()
-                            .acceptUserConnectionRequest(
-                                state1['connectionID'] as String, state1),
+                        onTap: () async =>
+                            FirebaseCore().acceptUserConnectionRequest(
+                          state1['connectionID'] as String,
+                          state1,
+                        ),
                         child: SizedBox(
                           height: 60,
                           child: Row(
@@ -72,8 +73,8 @@ class ReceivePage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      snapshot.data as String,
-                                      style: TextStyle(fontSize: 20),
+                                      snapshot.data!,
+                                      style: const TextStyle(fontSize: 20),
                                     ),
                                   ],
                                 ),
@@ -89,27 +90,27 @@ class ReceivePage extends StatelessWidget {
                                     child: Container(
                                       height: 40,
                                       width: 40,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Colors.red,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.close,
                                         color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                     height: 40,
                                     width: 40,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.green,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.check,
                                       color: Colors.white,
                                     ),
@@ -126,10 +127,10 @@ class ReceivePage extends StatelessWidget {
                   }
                 },
               ),
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
-                "Previous Connection Request",
+              child: Text(
+                'Previous Connection Request',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -141,7 +142,7 @@ class ReceivePage extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Card(
-                      child: Container(
+                      child: SizedBox(
                         height: 60,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,8 +155,8 @@ class ReceivePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    snapshot.data as String,
-                                    style: TextStyle(fontSize: 20),
+                                    snapshot.data!,
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ],
                               ),

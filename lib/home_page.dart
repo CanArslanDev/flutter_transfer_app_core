@@ -12,7 +12,6 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
-import 'package:flutter_fast_transfer_firebase_core/utils/multi_2_bloc_builder.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/receive_top_bar.dart';
 

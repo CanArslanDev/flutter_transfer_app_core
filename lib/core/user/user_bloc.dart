@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/file_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
 class UserBloc extends Cubit<UserModel> {
@@ -36,7 +36,7 @@ class UserBloc extends Cubit<UserModel> {
       }
       emit(
         state.copyWith(
-          deviceID: (modelMap!['deviceID'] != null)
+          deviceID: (modelMap['deviceID'] != null)
               ? modelMap['deviceID'] as String
               : null,
           expiration: modelMap['expiration'] as Timestamp,
@@ -51,7 +51,7 @@ class UserBloc extends Cubit<UserModel> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -68,7 +68,7 @@ class UserBloc extends Cubit<UserModel> {
         Navigator.push(
           NavigationService.navigatorKey.currentContext!,
           MaterialPageRoute<dynamic>(
-            builder: (context) => const FilePage(),
+            builder: (context) => const ConnectionPage(),
           ),
         );
       }
@@ -76,7 +76,6 @@ class UserBloc extends Cubit<UserModel> {
       final previousConnectionRequest = <Map<dynamic, dynamic>>[];
       for (final connectionData
           in userFirebaseData['connectionRequest'] as List<dynamic>) {
-        print(connectionData);
         connectionRequest.add(connectionData as Map<dynamic, dynamic>);
       }
       for (final previousConnectionData
@@ -110,7 +109,8 @@ class UserBloc extends Cubit<UserModel> {
   }
 
   void setPreviousConnectionRequest(
-      List<Map<dynamic, dynamic>> previousConnectionRequest) {
+    List<Map<dynamic, dynamic>> previousConnectionRequest,
+  ) {
     emit(state.copyWith(previousConnectionRequest: previousConnectionRequest));
   }
 
