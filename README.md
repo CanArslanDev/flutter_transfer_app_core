@@ -1,7 +1,10 @@
 
 ## Yapılacaklar
- - Receiver için istek kabul edildiğinde file page yönlendilirilecek
+ - url download enumı değişmesi için liste eklenecek 
  - Update uyarı sistemi ekleyelim
+ - Kullanıcının yeri olup olmadığı kontrol edilip dosyalar öyle eklenebilecek (transfer esnasında)
+ - Connection requester 5 dakikadan sonra kabul edilemeyecek, ve kullanıcı uygulamayı kapadıysa da kabul edilemeyecek
+Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionrequestlerde aynı kişiden fazla request geldiğinde silinme işlemini timestampe göre yaparak birden fazla aynı anda requested silinmesininde önüne geçilmiş olacak
 
 ## connection conditionları
  - Herhangi bir taraf bağlantıdan çıkarsa
@@ -27,6 +30,7 @@
 
 ## Yapılanlar
 
-- ~~FirebaseSendFileUploading düzenlenecek~~
-- ~~send file için map şeklinde kullanıcı datası alınacak~~
+ - ~~Receiver için istek kabul edildiğinde file page yönlendilirilecek~~
+ - ~~FirebaseSendFileUploading düzenlenecek~~
+ - ~~send file için map şeklinde kullanıcı datası alınacak~~
 
