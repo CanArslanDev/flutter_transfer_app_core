@@ -1,0 +1,22 @@
+${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh
+${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework
+${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework
+${BUILT_PRODUCTS_DIR}/FirebaseAuthInterop/FirebaseAuthInterop.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework
+${BUILT_PRODUCTS_DIR}/FirebaseFirestore/FirebaseFirestore.framework
+${BUILT_PRODUCTS_DIR}/FirebaseStorage/FirebaseStorage.framework
+${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework
+${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework
+${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework
+${BUILT_PRODUCTS_DIR}/SAMKeychain/SAMKeychain.framework
+${BUILT_PRODUCTS_DIR}/abseil/absl.framework
+${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework
+${BUILT_PRODUCTS_DIR}/flutter_secure_storage_macos/flutter_secure_storage_macos.framework
+${BUILT_PRODUCTS_DIR}/flutter_udid/flutter_udid.framework
+${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework
+${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework
+${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework
+${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework
+${BUILT_PRODUCTS_DIR}/path_provider_foundation/path_provider_foundation.framework

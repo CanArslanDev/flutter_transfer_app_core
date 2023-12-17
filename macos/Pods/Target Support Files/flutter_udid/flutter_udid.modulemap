@@ -1,0 +1,6 @@
+framework module flutter_udid {
+  umbrella header "flutter_udid-umbrella.h"
+
+  export *
+  module * { export * }
+}
