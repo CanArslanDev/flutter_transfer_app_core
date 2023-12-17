@@ -38,10 +38,11 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   ) {
     emit(
       state.copyWith(
-          receiverID: receiverID,
-          senderID: senderID,
-          userDetails: userDetails,
-          firebaseDocumentName: '$senderID-$receiverID'),
+        receiverID: receiverID,
+        senderID: senderID,
+        userDetails: userDetails,
+        firebaseDocumentName: '$senderID-$receiverID',
+      ),
     );
   }
 
@@ -75,7 +76,8 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   }
 
   Future<void> getFirebaseConnectionsCollection(
-      DocumentSnapshot<Object?> querySnapshot) async {
+    DocumentSnapshot<Object?> querySnapshot,
+  ) async {
     final connection = querySnapshot.data()! as Map<dynamic, dynamic>;
     emit(
       state.copyWith(

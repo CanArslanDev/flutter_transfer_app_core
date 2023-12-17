@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
 class UserBloc extends Cubit<UserModel> {
