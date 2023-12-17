@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/core_model.dart';
@@ -12,6 +15,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/receive_top_bar.dart';
 
@@ -20,11 +24,37 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    unawaited(FirebaseCore().initialize());
     final findIDController = TextEditingController();
     return Scaffold(
-      floatingActionButton: const FloatingActionButton(
-        onPressed: InAppNotifications.receiveTopBar,
-      ),
+      // floatingActionButton: const FloatingActionButton(
+      //   onPressed: InAppNotifications.receiveTopBar,
+      // ),
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        final connectedUserSender = {
+          'token':
+              '17424f43da2b63f82faee98d00209a7d4823afab620ec64e0c2dded07ba2b0a3',
+          'userID': '536808',
+          'username': 'User',
+        };
+        BlocProvider.of<FirebaseSendFileBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).setConnection(
+          '583249',
+          '536808',
+          connectedUserSender,
+        );
+        await BlocProvider.of<FirebaseSendFileBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).listenConnection();
+
+        await Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (context) => const ConnectionPage(),
+          ),
+        );
+      }),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),

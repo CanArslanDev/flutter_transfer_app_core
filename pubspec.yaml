@@ -44,6 +44,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   device_info_plus: ^9.1.0
   flutter_udid: ^2.0.1
+  file_picker: ^6.1.1
 
 dev_dependencies:
   flutter_test:
