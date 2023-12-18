@@ -14,17 +14,15 @@ import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.d
 class CoreFirebaseStorage {
   final storageRef = FirebaseStorage.instance;
   List<FirebaseFileModel> filesListRoot = [];
-
+  final firebaseSendBloc = BlocProvider.of<FirebaseSendFileBloc>(
+    NavigationService.navigatorKey.currentContext!,
+  );
   Future<void> sendFirebaseFilesListRoot() async {
-    await BlocProvider.of<FirebaseSendFileBloc>(
-      NavigationService.navigatorKey.currentContext!,
-    ).setFilesListAndPushFirebase(filesListRoot);
+    await firebaseSendBloc.setFilesListAndPushFirebase(filesListRoot);
   }
 
   String get getConnectionCollectionFirebaseDocumentName =>
-      BlocProvider.of<FirebaseSendFileBloc>(
-        NavigationService.navigatorKey.currentContext!,
-      ).getConnectionCollectionFirebaseDocumentName();
+      firebaseSendBloc.getConnectionCollectionFirebaseDocumentName();
 
   void uploadFilesFromList(List<File> fileList) {
     filesListRoot = BlocProvider.of<FirebaseSendFileBloc>(
@@ -46,11 +44,12 @@ class CoreFirebaseStorage {
   ) async {
     final fileName =
         await changeFileNameWithAddTimestamp(file.path.split('/').last);
+    final fileSize = FilePickerService().getFileSize(file.path, 1);
     final fileModel = FirebaseFileModel(
       name: fileName,
       bytesTransferred: '0',
-      totalBytes: '0',
-      size: (file.lengthSync() / 1024).toString(),
+      totalBytes: file.lengthSync().toString(),
+      size: fileSize,
       percentage: '0',
       url: '',
       downloadStatus: FirebaseFileModelDownloadStatus.notDownloaded,
@@ -74,6 +73,7 @@ class CoreFirebaseStorage {
               ((int.parse(bytesTransferred) / int.parse(totalBytes)) * 100)
                   .toStringAsFixed(0);
         changeFileInFilesListRoot(fileModel);
+        firebaseSendBloc.calculateTotalAndNowSpacesInFileList();
         sendFirebaseFilesListRoot();
       },
       uploadSuccessCallback: () {},

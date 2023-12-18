@@ -15,6 +15,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/service/http_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
 
@@ -29,31 +30,52 @@ class TestPage extends StatelessWidget {
       // floatingActionButton: const FloatingActionButton(
       //   onPressed: InAppNotifications.receiveTopBar,
       // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final connectedUserSender = {
-            'token':
-                '17424f43da2b63f82faee98d00209a7d4823afab620ec64e0c2dded07ba2b0a3',
-            'userID': '536808',
-            'username': 'User',
-          };
-          BlocProvider.of<FirebaseSendFileBloc>(
-            NavigationService.navigatorKey.currentContext!,
-          ).setConnection(
-            '583249',
-            '536808',
-          );
-          await BlocProvider.of<FirebaseSendFileBloc>(
-            NavigationService.navigatorKey.currentContext!,
-          ).listenConnection();
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              final listDownloaded = await HttpService().listDownloadedFiles();
+              listDownloaded.forEach((file) {
+                print(file.path.split('/').last);
+              });
+            },
+          ),
+          FloatingActionButton(
+            onPressed: () async {
+              final file = await HttpService().downloadFile(
+                  'https://firebasestorage.googleapis.com/v0/b/flutter-fast-transfer.appspot.com/o/files%2F115607-910721%2Fsender%2Ftest1Mb-1702883061.db?alt=media&token=6dd144cd-e2ae-4e35-9744-90fe06ac24ca',
+                  '1.db');
+              print(file.path);
+            },
+          ),
+          FloatingActionButton(
+            onPressed: () async {
+              final connectedUserSender = {
+                'token':
+                    '17424f43da2b63f82faee98d00209a7d4823afab620ec64e0c2dded07ba2b0a3',
+                'userID': '536808',
+                'username': 'User',
+              };
+              BlocProvider.of<FirebaseSendFileBloc>(
+                NavigationService.navigatorKey.currentContext!,
+              ).setConnection(
+                '583249',
+                '536808',
+              );
+              await BlocProvider.of<FirebaseSendFileBloc>(
+                NavigationService.navigatorKey.currentContext!,
+              ).listenConnection();
 
-          await Navigator.push(
-            NavigationService.navigatorKey.currentContext!,
-            MaterialPageRoute<dynamic>(
-              builder: (context) => const ConnectionPage(),
-            ),
-          );
-        },
+              await Navigator.push(
+                NavigationService.navigatorKey.currentContext!,
+                MaterialPageRoute<dynamic>(
+                  builder: (context) => const ConnectionPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
