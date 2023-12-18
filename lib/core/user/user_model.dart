@@ -9,7 +9,7 @@ class UserModel {
     required this.token,
     required this.connectionRequest,
     required this.previousConnectionRequest,
-    required this.sendList,
+    required this.latestSendedFilesList,
     required this.connectedUser,
     required this.username,
   });
@@ -20,7 +20,7 @@ class UserModel {
   String token;
   List<Map<dynamic, dynamic>> connectionRequest;
   List<Map<dynamic, dynamic>> previousConnectionRequest;
-  List<Map<dynamic, dynamic>> sendList;
+  List<Map<dynamic, dynamic>> latestSendedFilesList;
   Map<dynamic, dynamic> connectedUser;
   String username;
 
@@ -32,7 +32,7 @@ class UserModel {
     String? token,
     List<Map<dynamic, dynamic>>? connectionRequest,
     List<Map<dynamic, dynamic>>? previousConnectionRequest,
-    List<Map<dynamic, dynamic>>? sendList,
+    List<Map<dynamic, dynamic>>? latestSendedFilesList,
     Map<dynamic, dynamic>? connectedUser,
     String? username,
   }) {
@@ -46,7 +46,8 @@ class UserModel {
       connectionRequest: connectionRequest ?? this.connectionRequest,
       previousConnectionRequest:
           previousConnectionRequest ?? this.previousConnectionRequest,
-      sendList: sendList ?? this.sendList,
+      latestSendedFilesList:
+          latestSendedFilesList ?? this.latestSendedFilesList,
       connectedUser: connectedUser ?? this.connectedUser,
       username: username ?? this.username,
     );

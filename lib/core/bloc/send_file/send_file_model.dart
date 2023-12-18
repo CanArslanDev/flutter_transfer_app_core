@@ -1,3 +1,4 @@
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_uploading_enum.dart';
@@ -10,12 +11,12 @@ class FirebaseSendFileModel {
     required this.filesCount,
     required this.sendSpeed,
     required this.filesList,
+    required this.downloadFilesList,
     required this.status,
     required this.errorMessage,
     required this.uploadingStatus,
     required this.fileTotalSpaceAsKB,
     required this.fileNowSpaceAsKB,
-    required this.userDetails,
   });
   String receiverID;
   String senderID;
@@ -23,12 +24,12 @@ class FirebaseSendFileModel {
   int filesCount;
   String sendSpeed;
   List<FirebaseFileModel> filesList;
+  List<FirebaseDownloadFileModel> downloadFilesList;
   String errorMessage;
   FirebaseSendFileRequestEnum status;
   FirebaseSendFileUploadingEnum uploadingStatus;
   double fileTotalSpaceAsKB;
   double fileNowSpaceAsKB;
-  Map<String, String> userDetails;
 
   FirebaseSendFileModel copyWith({
     String? receiverID,
@@ -37,12 +38,12 @@ class FirebaseSendFileModel {
     int? filesCount,
     String? sendSpeed,
     List<FirebaseFileModel>? filesList,
+    List<FirebaseDownloadFileModel>? downloadFilesList,
     FirebaseSendFileRequestEnum? status,
     String? errorMessage,
     FirebaseSendFileUploadingEnum? uploadingStatus,
     double? fileTotalSpaceAsKB,
     double? fileNowSpaceAsKB,
-    Map<String, String>? userDetails,
   }) {
     return FirebaseSendFileModel(
       receiverID: receiverID ?? this.receiverID,
@@ -51,12 +52,12 @@ class FirebaseSendFileModel {
       filesCount: filesCount ?? this.filesCount,
       sendSpeed: sendSpeed ?? this.sendSpeed,
       filesList: filesList ?? this.filesList,
+      downloadFilesList: downloadFilesList ?? this.downloadFilesList,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       uploadingStatus: uploadingStatus ?? this.uploadingStatus,
       fileTotalSpaceAsKB: fileTotalSpaceAsKB ?? this.fileTotalSpaceAsKB,
       fileNowSpaceAsKB: fileNowSpaceAsKB ?? this.fileNowSpaceAsKB,
-      userDetails: userDetails ?? this.userDetails,
     );
   }
 }

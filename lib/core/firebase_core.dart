@@ -112,7 +112,7 @@ class FirebaseCore {
     final userData = <String, dynamic>{
       'previousConnectionRequest': <Map<dynamic, dynamic>>{},
       'connectionRequest': <Map<dynamic, dynamic>>{},
-      'sendList': <Map<dynamic, dynamic>>{},
+      'latestSendedFilesList': <Map<dynamic, dynamic>>{},
       'connectedUser': {
         'userID': '',
         'token': '',
@@ -134,12 +134,6 @@ class FirebaseCore {
     String connectionID,
     Map<dynamic, dynamic> connectionData,
   ) async {
-    // await FirebaseCoreSystem()
-    //     .setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
-    //   connectionID,
-    //   connectionData,
-    // );
-
     final userModel = BlocProvider.of<UserBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).getModel();
@@ -153,6 +147,12 @@ class FirebaseCore {
       'userID': connectionData['connectionID'] as String,
       'username': connectionData['username'] as String,
     };
+    BlocProvider.of<FirebaseSendFileBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).setConnection(
+      userModel.deviceID,
+      connectionData['connectionID'] as String,
+    );
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userModel.token)
@@ -165,13 +165,6 @@ class FirebaseCore {
         .update({
       'connectedUser': connectedUserReceiver,
     });
-    BlocProvider.of<FirebaseSendFileBloc>(
-      NavigationService.navigatorKey.currentContext!,
-    ).setConnection(
-      connectionData['connectionID'] as String,
-      userModel.deviceID,
-      connectedUserSender,
-    );
     await BlocProvider.of<FirebaseSendFileBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).setFirebaseConnectionsCollection();

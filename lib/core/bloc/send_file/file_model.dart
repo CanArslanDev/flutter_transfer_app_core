@@ -1,8 +1,4 @@
-enum FirebaseFileModelDownloadStatus {
-  notDownloaded,
-  downloading,
-  downloaded,
-}
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_status_enum.dart';
 
 class FirebaseFileModel {
   FirebaseFileModel({
@@ -13,7 +9,7 @@ class FirebaseFileModel {
     required this.percentage,
     required this.url,
     required this.downloadStatus,
-    this.path,
+    required this.path,
   });
   String name;
   String bytesTransferred;
@@ -22,7 +18,7 @@ class FirebaseFileModel {
   String percentage;
   String url;
   FirebaseFileModelDownloadStatus downloadStatus;
-  String? path;
+  String path;
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,6 +29,7 @@ class FirebaseFileModel {
       'percentage': percentage,
       'downloadStatus': downloadStatus.index,
       'url': url,
+      'path': path,
     };
   }
 }
@@ -47,5 +44,26 @@ FirebaseFileModel firebaseFileModelFromMap(Map<dynamic, dynamic> map) {
     downloadStatus:
         FirebaseFileModelDownloadStatus.values[map['downloadStatus'] as int],
     url: map['url'] as String,
+    path: map['path'] as String,
   );
+}
+
+List<Map<dynamic, dynamic>> firebaseFileModelListToMap(
+  List<FirebaseFileModel> filesList,
+) {
+  final filesListMap = <Map<dynamic, dynamic>>[];
+  for (final file in filesList) {
+    filesListMap.add(file.toMap());
+  }
+  return filesListMap;
+}
+
+List<FirebaseFileModel> firebaseFileModelListFromMap(
+  List<dynamic> filesListMap,
+) {
+  final filesList = <FirebaseFileModel>[];
+  for (final file in filesListMap) {
+    filesList.add(firebaseFileModelFromMap(file as Map<dynamic, dynamic>));
+  }
+  return filesList;
 }

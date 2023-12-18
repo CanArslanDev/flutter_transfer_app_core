@@ -39,7 +39,6 @@ class ConnectionPage extends StatelessWidget {
               Text('uploadingStatus: ${state.uploadingStatus}'),
               Text('fileTotalSpaceAsKB: ${state.fileTotalSpaceAsKB}'),
               Text('fileNowSpaceAsKB: ${state.fileNowSpaceAsKB}'),
-              Text('userDetails: ${state.userDetails}'),
               ElevatedButton(
                 onPressed: () async {
                   final fileList = await FilePickerService().pickFiles();
@@ -47,7 +46,7 @@ class ConnectionPage extends StatelessWidget {
                 },
                 child: const Text('choose file'),
               ),
-              Text('filesList'),
+              const Text('filesList'),
               for (final file in state.filesList.reversed) Text('''
                   name: ${file.name}
                   bytesTransferred: ${file.bytesTransferred}

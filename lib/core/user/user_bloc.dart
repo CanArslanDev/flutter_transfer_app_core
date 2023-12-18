@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
@@ -16,7 +17,7 @@ class UserBloc extends Cubit<UserModel> {
             token: '',
             connectionRequest: [],
             previousConnectionRequest: [],
-            sendList: [],
+            latestSendedFilesList: [],
             connectedUser: {},
             username: '',
           ),
@@ -30,9 +31,11 @@ class UserBloc extends Cubit<UserModel> {
     Map<String, dynamic>? modelMap,
   ) {
     try {
-      final sendList = <Map<dynamic, dynamic>>[];
-      for (final sendListData in modelMap!['sendList'] as List<dynamic>) {
-        sendList.add(sendListData as Map<dynamic, dynamic>);
+      final latestSendedFilesList = <Map<dynamic, dynamic>>[];
+      for (final latestSendedFilesListData
+          in modelMap!['latestSendedFilesList'] as List<dynamic>) {
+        latestSendedFilesList
+            .add(latestSendedFilesListData as Map<dynamic, dynamic>);
       }
       emit(
         state.copyWith(
@@ -45,7 +48,7 @@ class UserBloc extends Cubit<UserModel> {
           availableCloudStorageMB:
               double.parse(modelMap['availableCloudStorageMB'].toString()),
           token: modelMap['token'] as String,
-          sendList: sendList,
+          latestSendedFilesList: latestSendedFilesList,
           connectedUser: modelMap['connectedUser'] as Map<dynamic, dynamic>,
           username: modelMap['username'] as String,
         ),
@@ -58,14 +61,26 @@ class UserBloc extends Cubit<UserModel> {
   void listenUserDataFromFirebase() {
     final DocumentReference reference =
         FirebaseFirestore.instance.collection('users').doc(state.token);
-    reference.snapshots().listen((querySnapshot) {
+    reference.snapshots().listen((querySnapshot) async {
       final userFirebaseData = querySnapshot.data()! as Map<dynamic, dynamic>;
       final connectedUser =
           userFirebaseData['connectedUser'] as Map<dynamic, dynamic>;
       if (connectedUser['token'] != '' &&
           connectedUser['userID'] != '' &&
-          connectedUser['username'] != '') {
-        Navigator.push(
+          connectedUser['username'] != '' &&
+          !BlocProvider.of<FirebaseSendFileBloc>(
+            NavigationService.navigatorKey.currentContext!,
+          ).ifConnectionExist()) {
+        BlocProvider.of<FirebaseSendFileBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).setConnection(
+          connectedUser['userID'] as String,
+          state.deviceID,
+        );
+        await BlocProvider.of<FirebaseSendFileBloc>(
+          NavigationService.navigatorKey.currentContext!,
+        ).listenConnection();
+        await Navigator.push(
           NavigationService.navigatorKey.currentContext!,
           MaterialPageRoute<dynamic>(
             builder: (context) => const ConnectionPage(),

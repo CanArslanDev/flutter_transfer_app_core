@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
@@ -23,72 +26,28 @@ class CoreFirebaseStorage {
         NavigationService.navigatorKey.currentContext!,
       ).getConnectionCollectionFirebaseDocumentName();
 
-  /*void addFileFilesList(
-    String fileName,
-    String fileSize,
-  ) {
-    filesListRoot[fileName] = {
-      'file': {
-        'name': fileName,
-        'size': fileSize,
-        'bytesTransferred': '',
-        'totalBytes': '',
-        'fileSize': fileSize,
-        'percentage': '0',
-        'url': '',
-      }
-    };
-  }*/
-
-  /*void setFileFilesList({
-    String? bytesTransferred,
-    String? totalBytes,
-    String? fileName,
-    String? fileSize,
-    String? url,
-  }) {
-    final originalfilesListRoot =
-        filesListRoot[fileName] as Map<dynamic, dynamic>;
-    final originalfilesListRootFile =
-        originalfilesListRoot['file'] as Map<dynamic, dynamic>;
-    final percentageCalculation = ((int.parse(
-                  bytesTransferred ??
-                      originalfilesListRootFile['bytesTransferred'] as String,
-                ) /
-                int.parse(
-                  totalBytes ??
-                      originalfilesListRootFile['totalBytes'] as String,
-                )) *
-            100)
-        .toStringAsFixed(0);
-    filesListRoot[fileName] = {
-      'file': {
-        'name': fileName ?? originalfilesListRootFile['name'] as String,
-        'size': fileSize ?? originalfilesListRootFile['size'],
-        'bytesTransferred': bytesTransferred,
-        'totalBytes': totalBytes,
-        'fileSize': fileSize ?? originalfilesListRootFile['fileSize'],
-        'percentage': percentageCalculation,
-        'url': '',
-      }
-    };
-  }*/
-
   void uploadFilesFromList(List<File> fileList) {
     filesListRoot = BlocProvider.of<FirebaseSendFileBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).getFilesList() as List<FirebaseFileModel>;
     fileList.map((file) async {
-      convertAndSendFileModel(
-        file,
-        'files/',
+      unawaited(
+        convertAndSendFileModel(
+          file,
+          'files/',
+        ),
       );
     }).toList();
   }
 
-  void convertAndSendFileModel(File file, String destination) {
+  Future<void> convertAndSendFileModel(
+    File file,
+    String destination,
+  ) async {
+    final fileName =
+        await changeFileNameWithAddTimestamp(file.path.split('/').last);
     final fileModel = FirebaseFileModel(
-      name: file.path.split('/').last,
+      name: fileName,
       bytesTransferred: '0',
       totalBytes: '0',
       size: (file.lengthSync() / 1024).toString(),
@@ -101,7 +60,7 @@ class CoreFirebaseStorage {
     uploadFile(
       file,
       'files/$getConnectionCollectionFirebaseDocumentName/sender/',
-      file.path.split('/').last,
+      fileName,
       urlCallback: (url) {
         fileModel.url = url;
         changeFileInFilesListRoot(fileModel);
@@ -121,8 +80,17 @@ class CoreFirebaseStorage {
     );
   }
 
+  Future<String> changeFileNameWithAddTimestamp(String fileName) async {
+    final fileNameFirst = fileName.split('.').first;
+    final fileNameLast = fileName.split('.').last;
+    final timestamp =
+        (await FirebaseCore().getServerTimestamp()).seconds.toString();
+    return '$fileNameFirst-$timestamp.$fileNameLast';
+  }
+
   void changeFileInFilesListRoot(FirebaseFileModel file) {
-    final index = filesListRoot.indexWhere((item) => item.path == file.path);
+    final index = filesListRoot
+        .indexWhere((item) => item.path == file.path && item.name == file.name);
     filesListRoot[index] = file;
   }
 
@@ -146,7 +114,7 @@ class CoreFirebaseStorage {
       });
       getUrlWhenCompleteTask(uploadTask, urlCallback);
     } catch (e) {
-      print('error occured $e');
+      debugPrint('error occured $e');
     }
   }
 

@@ -63,7 +63,7 @@ class FirebaseCoreSystem {
           doc['connectionRequest'] != null &&
           doc['previousConnectionRequest'] != null &&
           doc['availableCloudStorageMB'] != null &&
-          doc['sendList'] != null &&
+          doc['latestSendedFilesList'] != null &&
           doc['connectedUser'] != null &&
           doc['username'] != null) {
         return true;

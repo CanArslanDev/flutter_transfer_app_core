@@ -42,7 +42,6 @@ class TestPage extends StatelessWidget {
           ).setConnection(
             '583249',
             '536808',
-            connectedUserSender,
           );
           await BlocProvider.of<FirebaseSendFileBloc>(
             NavigationService.navigatorKey.currentContext!,
