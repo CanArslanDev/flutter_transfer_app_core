@@ -6,7 +6,9 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_fil
 class FirebaseSendFileModel {
   FirebaseSendFileModel({
     required this.receiverID,
+    required this.receiverUsername,
     required this.senderID,
+    required this.senderUsename,
     required this.firebaseDocumentName,
     required this.filesCount,
     required this.sendSpeed,
@@ -19,7 +21,9 @@ class FirebaseSendFileModel {
     required this.fileNowSpaceAsKB,
   });
   String receiverID;
+  String receiverUsername;
   String senderID;
+  String senderUsename;
   String firebaseDocumentName;
   int filesCount;
   String sendSpeed;
@@ -33,7 +37,9 @@ class FirebaseSendFileModel {
 
   FirebaseSendFileModel copyWith({
     String? receiverID,
+    String? receiverUsername,
     String? senderID,
+    String? senderUsename,
     String? firebaseDocumentName,
     int? filesCount,
     String? sendSpeed,
@@ -47,7 +53,9 @@ class FirebaseSendFileModel {
   }) {
     return FirebaseSendFileModel(
       receiverID: receiverID ?? this.receiverID,
+      receiverUsername: receiverUsername ?? this.receiverUsername,
       senderID: senderID ?? this.senderID,
+      senderUsename: senderUsename ?? this.senderUsename,
       firebaseDocumentName: firebaseDocumentName ?? this.firebaseDocumentName,
       filesCount: filesCount ?? this.filesCount,
       sendSpeed: sendSpeed ?? this.sendSpeed,

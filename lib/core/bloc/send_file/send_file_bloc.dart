@@ -21,7 +21,9 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
       : super(
           FirebaseSendFileModel(
             receiverID: '',
+            receiverUsername: '',
             senderID: '',
+            senderUsename: '',
             firebaseDocumentName: '',
             filesCount: 0,
             sendSpeed: '0',
@@ -37,12 +39,16 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
 
   void setConnection(
     String receiverID,
+    String receiverUsername,
     String senderID,
+    String senderUsename,
   ) {
     emit(
       state.copyWith(
         receiverID: receiverID,
+        receiverUsername: receiverUsername,
         senderID: senderID,
+        senderUsename: senderUsename,
         firebaseDocumentName: '$senderID-$receiverID',
       ),
     );
@@ -135,7 +141,9 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
         .doc(state.firebaseDocumentName)
         .set({
       'receiverID': state.receiverID,
+      'receiverUsername': state.receiverUsername,
       'senderID': state.senderID,
+      'senderUsename': state.senderUsename,
       'filesCount': 0,
       'sendSpeed': '0',
       'filesList': <Map<dynamic, dynamic>>{},
@@ -154,7 +162,9 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
         .doc(state.firebaseDocumentName)
         .update({
       'receiverID': state.receiverID,
+      'receiverUsername': state.receiverUsername,
       'senderID': state.senderID,
+      'senderUsename': state.senderUsename,
       'filesCount': state.filesList.length,
       'sendSpeed': '0',
       'filesList': firebaseFileModelListToMap(state.filesList),
@@ -196,7 +206,9 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
     emit(
       state.copyWith(
         receiverID: connection['receiverID'] as String,
+        receiverUsername: connection['receiverUsername'] as String,
         senderID: connection['senderID'] as String,
+        senderUsename: connection['senderUsename'] as String,
         filesCount: connection['filesCount'] as int,
         sendSpeed: connection['sendSpeed'] as String,
         filesList: firebaseFileModelListFromMap(

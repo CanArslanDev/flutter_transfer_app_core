@@ -112,7 +112,7 @@ class FirebaseCore {
     final userData = <String, dynamic>{
       'previousConnectionRequest': <Map<dynamic, dynamic>>{},
       'connectionRequest': <Map<dynamic, dynamic>>{},
-      'latestSendedFilesList': <Map<dynamic, dynamic>>{},
+      'latestConnections': <Map<dynamic, dynamic>>{},
       'connectedUser': {
         'userID': '',
         'token': '',
@@ -151,7 +151,9 @@ class FirebaseCore {
       NavigationService.navigatorKey.currentContext!,
     ).setConnection(
       userModel.deviceID,
+      userModel.username,
       connectionData['connectionID'] as String,
+      connectionData['username'] as String,
     );
     await FirebaseFirestore.instance
         .collection('users')

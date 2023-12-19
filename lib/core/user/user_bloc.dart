@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/latest_connections_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
@@ -17,7 +18,7 @@ class UserBloc extends Cubit<UserModel> {
             token: '',
             connectionRequest: [],
             previousConnectionRequest: [],
-            latestSendedFilesList: [],
+            latestConnections: [],
             connectedUser: {},
             username: '',
           ),
@@ -31,11 +32,10 @@ class UserBloc extends Cubit<UserModel> {
     Map<String, dynamic>? modelMap,
   ) {
     try {
-      final latestSendedFilesList = <Map<dynamic, dynamic>>[];
-      for (final latestSendedFilesListData
-          in modelMap!['latestSendedFilesList'] as List<dynamic>) {
-        latestSendedFilesList
-            .add(latestSendedFilesListData as Map<dynamic, dynamic>);
+      final latestConnections = <Map<dynamic, dynamic>>[];
+      for (final latestConnectionsData
+          in modelMap!['latestConnections'] as List<dynamic>) {
+        latestConnections.add(latestConnectionsData as Map<dynamic, dynamic>);
       }
       emit(
         state.copyWith(
@@ -48,7 +48,8 @@ class UserBloc extends Cubit<UserModel> {
           availableCloudStorageMB:
               double.parse(modelMap['availableCloudStorageMB'].toString()),
           token: modelMap['token'] as String,
-          latestSendedFilesList: latestSendedFilesList,
+          latestConnections:
+              convertLatestConnectionsListFromMap(latestConnections),
           connectedUser: modelMap['connectedUser'] as Map<dynamic, dynamic>,
           username: modelMap['username'] as String,
         ),
@@ -56,6 +57,27 @@ class UserBloc extends Cubit<UserModel> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  List<UserLatestConnectionsModel> convertLatestConnectionsListFromMap(
+      List<dynamic> latestConnectionsList) {
+    final latestConnections = <UserLatestConnectionsModel>[];
+    for (final latestConnectionsData in latestConnectionsList) {
+      latestConnections.add(
+        userLatestConnectionsModelFromMap(
+            latestConnectionsData as Map<dynamic, dynamic>),
+      );
+    }
+    return latestConnections;
+  }
+
+  List<Map<dynamic, dynamic>> convertLatestConnectionsListToMap(
+      List<UserLatestConnectionsModel> latestConnectionsList) {
+    final latestConnections = <Map<dynamic, dynamic>>[];
+    for (final latestConnectionsData in latestConnectionsList) {
+      latestConnections.add(latestConnectionsData.toMap());
+    }
+    return latestConnections;
   }
 
   void listenUserDataFromFirebase() {
@@ -74,9 +96,10 @@ class UserBloc extends Cubit<UserModel> {
         BlocProvider.of<FirebaseSendFileBloc>(
           NavigationService.navigatorKey.currentContext!,
         ).setConnection(
-          connectedUser['userID'] as String,
-          state.deviceID,
-        );
+            connectedUser['userID'] as String,
+            connectedUser['username'] as String,
+            state.deviceID,
+            state.username);
         await BlocProvider.of<FirebaseSendFileBloc>(
           NavigationService.navigatorKey.currentContext!,
         ).listenConnection();
@@ -87,24 +110,37 @@ class UserBloc extends Cubit<UserModel> {
           ),
         );
       }
-      final connectionRequest = <Map<dynamic, dynamic>>[];
-      final previousConnectionRequest = <Map<dynamic, dynamic>>[];
-      for (final connectionData
-          in userFirebaseData['connectionRequest'] as List<dynamic>) {
-        connectionRequest.add(connectionData as Map<dynamic, dynamic>);
-      }
-      for (final previousConnectionData
-          in userFirebaseData['previousConnectionRequest'] as List<dynamic>) {
-        previousConnectionRequest
-            .add(previousConnectionData as Map<dynamic, dynamic>);
-      }
       emit(
         state.copyWith(
-          connectionRequest: connectionRequest,
-          previousConnectionRequest: previousConnectionRequest,
+          latestConnections: convertLatestConnectionsListFromMap(
+              userFirebaseData['latestConnections'] as List<dynamic>),
+          connectionRequest: convertConnectionRequestListToMap(
+              userFirebaseData['previousConnectionRequest'] as List<dynamic>),
+          previousConnectionRequest: convertPreviousConnectionRequestListToMap(
+              userFirebaseData['previousConnectionRequest'] as List<dynamic>),
         ),
       );
     });
+  }
+
+  List<Map<dynamic, dynamic>> convertConnectionRequestListToMap(
+      List<dynamic> connectionRequestList) {
+    final connectionRequest = <Map<dynamic, dynamic>>[];
+    for (final connectionRequestData in connectionRequestList) {
+      connectionRequest.add(connectionRequestData as Map<dynamic, dynamic>);
+    }
+    return connectionRequest;
+  }
+
+  List<Map<dynamic, dynamic>> convertPreviousConnectionRequestListToMap(
+    List<dynamic> previousConnectionRequestList,
+  ) {
+    final previousConnectionRequest = <Map<dynamic, dynamic>>[];
+    for (final previousConnectionRequestData in previousConnectionRequestList) {
+      previousConnectionRequest
+          .add(previousConnectionRequestData as Map<dynamic, dynamic>);
+    }
+    return previousConnectionRequest;
   }
 
   UserModel getModel() {

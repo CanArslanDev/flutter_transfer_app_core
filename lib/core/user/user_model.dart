@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/latest_connections_model.dart';
 
 class UserModel {
   UserModel({
@@ -9,7 +10,7 @@ class UserModel {
     required this.token,
     required this.connectionRequest,
     required this.previousConnectionRequest,
-    required this.latestSendedFilesList,
+    required this.latestConnections,
     required this.connectedUser,
     required this.username,
   });
@@ -20,7 +21,7 @@ class UserModel {
   String token;
   List<Map<dynamic, dynamic>> connectionRequest;
   List<Map<dynamic, dynamic>> previousConnectionRequest;
-  List<Map<dynamic, dynamic>> latestSendedFilesList;
+  List<UserLatestConnectionsModel> latestConnections;
   Map<dynamic, dynamic> connectedUser;
   String username;
 
@@ -32,7 +33,7 @@ class UserModel {
     String? token,
     List<Map<dynamic, dynamic>>? connectionRequest,
     List<Map<dynamic, dynamic>>? previousConnectionRequest,
-    List<Map<dynamic, dynamic>>? latestSendedFilesList,
+    List<UserLatestConnectionsModel>? latestConnections,
     Map<dynamic, dynamic>? connectedUser,
     String? username,
   }) {
@@ -46,8 +47,7 @@ class UserModel {
       connectionRequest: connectionRequest ?? this.connectionRequest,
       previousConnectionRequest:
           previousConnectionRequest ?? this.previousConnectionRequest,
-      latestSendedFilesList:
-          latestSendedFilesList ?? this.latestSendedFilesList,
+      latestConnections: latestConnections ?? this.latestConnections,
       connectedUser: connectedUser ?? this.connectedUser,
       username: username ?? this.username,
     );
