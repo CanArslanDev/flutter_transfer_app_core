@@ -155,6 +155,9 @@ class FirebaseCore {
       connectionData['connectionID'] as String,
       connectionData['username'] as String,
     );
+    await BlocProvider.of<FirebaseSendFileBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).setFirebaseConnectionsCollection();
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userModel.token)
@@ -167,9 +170,6 @@ class FirebaseCore {
         .update({
       'connectedUser': connectedUserReceiver,
     });
-    await BlocProvider.of<FirebaseSendFileBloc>(
-      NavigationService.navigatorKey.currentContext!,
-    ).setFirebaseConnectionsCollection();
     await BlocProvider.of<FirebaseSendFileBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).listenConnection();

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_status_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/download_status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
@@ -52,6 +52,7 @@ class CoreFirebaseStorage {
       size: fileSize,
       percentage: '0',
       url: '',
+      downloadPath: '',
       downloadStatus: FirebaseFileModelDownloadStatus.notDownloaded,
       path: file.path,
     );

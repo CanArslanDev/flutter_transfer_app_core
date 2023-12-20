@@ -24,12 +24,13 @@ class ReceivePage extends StatelessWidget {
           final docSnapshotuser = await collectionuser.get();
           final doc = docSnapshotuser.data();
           final connectionRequest = doc!['connectionRequest'] as List<dynamic>;
-          connectionRequest.add({
-            'requestUserDeviceToken':
-                'b83f937d71ef9c59b96a4d67779e77bc11d604c6fbf58383ea642e85e7a49c4b',
-            'connectionID': '583249',
-            'username': 'User',
-          });
+          // connectionRequest.add({
+          //   'requestUserDeviceToken':
+          //       'b83f937d71ef9c59b96a4d6777
+          // 9e77bc11d604c6fbf58383ea642e85e7a49c4b',
+          //   'connectionID': '583249',
+          //   'username': 'User',
+          // });
           await FirebaseFirestore.instance
               .collection('users')
               .doc(deviceToken)

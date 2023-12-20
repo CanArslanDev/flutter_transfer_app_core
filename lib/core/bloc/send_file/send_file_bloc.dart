@@ -3,15 +3,16 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_status_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file/download_file_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file/download_file_utils.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/download_status_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_request_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_uploading_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_request_enum.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_uploading_enum.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_utils.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/latest_connections_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/http_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
@@ -34,8 +35,11 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
             uploadingStatus: FirebaseSendFileUploadingEnum.stable,
             fileTotalSpaceAsKB: 0,
             fileNowSpaceAsKB: 0,
+            dateTime: Timestamp.fromDate(DateTime.now()), //for a tenporary
           ),
         );
+
+  final sendFileUtils = FirebaseSendFileUtils();
 
   void setConnection(
     String receiverID,
@@ -59,28 +63,20 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   }
 
   void downloadFilesInFilesList() {
-    final filesList = state.filesList;
-    for (final file in filesList) {
-      if (file.url == '') {
-        return;
-      }
-      final index = state.downloadFilesList.indexWhere(
-        (item) => item.path == file.path && item.name == file.name,
-      );
-      if (index == -1) {
-        final fileModel = FirebaseDownloadFileModel(
-          path: file.path,
-          name: file.name,
-          downloadStatus: FirebaseFileModelDownloadStatus.downloading,
-        );
-        state.downloadFilesList.add(fileModel);
-        downloadFile(file.name, file.path, file.url, (downloadStatus) {
-          fileModel.downloadStatus = downloadStatus;
-          changeDownloadFileInDownloadFilesList(fileModel);
+    FirebaseDownloadFileUtils().downloadFilesInFilesList(
+        state.filesList, state.downloadFilesList, (downloadModel, fileModel) {
+      state.downloadFilesList.add(downloadModel);
+      downloadFile(fileModel.name, fileModel.path, fileModel.url,
+          (downloadStatus, downloadPath) {
+        if (downloadStatus != fileModel.downloadStatus) {
+          downloadModel
+            ..downloadStatus = downloadStatus
+            ..downloadPath = downloadPath;
+          changeDownloadFileInDownloadFilesList(downloadModel);
           unawaited(updateFirebaseDownloadFilesList());
-        });
-      }
-    }
+        }
+      });
+    });
   }
 
   Future<void> updateDownloadFilesListAndFilesListInFirebase() async {
@@ -105,12 +101,25 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
     String fileName,
     String filePath,
     String fileUrl,
-    void Function(FirebaseFileModelDownloadStatus downloadStatus)
-        downloadStatus,
+    void Function(
+      FirebaseFileModelDownloadStatus downloadStatus,
+      String downloadPath,
+    ) downloadStatus,
   ) async {
-    downloadStatus.call(FirebaseFileModelDownloadStatus.downloading);
-    await HttpService().downloadFile(fileUrl, fileName);
-    downloadStatus.call(FirebaseFileModelDownloadStatus.downloaded);
+    var downloadPathLocation = '';
+    downloadStatus.call(
+      FirebaseFileModelDownloadStatus.downloading,
+      downloadPathLocation,
+    );
+    await HttpService().downloadFile(
+      fileUrl,
+      fileName,
+      downloadPath: (downloadPath) => downloadPathLocation = downloadPath,
+    );
+    downloadStatus.call(
+      FirebaseFileModelDownloadStatus.downloaded,
+      downloadPathLocation,
+    );
   }
 
   Future<void> listenConnection() async {
@@ -153,10 +162,12 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
       'uploadingStatus': FirebaseSendFileUploadingEnum.stable.index,
       'fileTotalSpaceAsKB': 0.0,
       'fileNowSpaceAsKB': 0.0,
+      'dateTime': await FirebaseCore().getServerTimestamp(),
     });
   }
 
   Future<void> updateFirebaseConnectionsCollection() async {
+    unawaited(sendLatestConnectionsToUserBloc());
     await FirebaseFirestore.instance
         .collection('connections')
         .doc(state.firebaseDocumentName)
@@ -176,7 +187,28 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
       'uploadingStatus': FirebaseSendFileUploadingEnum.stable.index,
       'fileTotalSpaceAsKB': state.fileTotalSpaceAsKB,
       'fileNowSpaceAsKB': state.fileNowSpaceAsKB,
+      'dateTime': state.dateTime,
     });
+  }
+
+  Future<void> sendLatestConnectionsToUserBloc() async {
+    BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).listUnionLatestConnectionsInState(
+      UserLatestConnectionsModel(
+        receiverID: state.receiverID,
+        receiverUsername: state.receiverUsername,
+        senderID: state.senderID,
+        senderUsename: state.senderUsename,
+        filesCount: state.filesList.length,
+        filesList: state.filesList,
+        fileTotalSpaceAsKB: state.fileTotalSpaceAsKB,
+        dateTime: state.dateTime,
+      ),
+    );
+    await BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    ).sendFirebaseLatestConnectionsList();
   }
 
   Future<void> updateFirebaseDownloadFilesList() async {
@@ -191,6 +223,7 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   }
 
   Future<void> updateFirebaseFilesList() async {
+    // unawaited(sendLatestConnectionsToUserBloc());
     await FirebaseFirestore.instance
         .collection('connections')
         .doc(state.firebaseDocumentName)
@@ -202,104 +235,67 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   void getFirebaseConnectionsCollection(
     DocumentSnapshot<Object?> querySnapshot,
   ) {
-    final connection = querySnapshot.data()! as Map<dynamic, dynamic>;
+    final mapState = querySnapshot.data()! as Map<dynamic, dynamic>;
+    mapState['firebaseDocumentName'] = state.firebaseDocumentName;
+    final newState = firebaseSendFileModelFromMap(mapState);
+    if (ifSenderIDEqualUserID) {
+      newState.filesList = sendFileUtils.changeFilesDownloadStatusThePrevious(
+        newState.filesList,
+        state.filesList,
+      );
+    }
     emit(
       state.copyWith(
-        receiverID: connection['receiverID'] as String,
-        receiverUsername: connection['receiverUsername'] as String,
-        senderID: connection['senderID'] as String,
-        senderUsename: connection['senderUsename'] as String,
-        filesCount: connection['filesCount'] as int,
-        sendSpeed: connection['sendSpeed'] as String,
-        filesList: firebaseFileModelListFromMap(
-          connection['filesList'] as List<dynamic>,
-        ),
-        downloadFilesList: firebaseDownloadFileModelListFromMap(
-          connection['downloadFilesList'] as List<dynamic>,
-        ),
-        status: FirebaseSendFileRequestEnum.values[connection['status'] as int],
-        errorMessage: connection['errorMessage'] as String,
+        receiverID: newState.receiverID,
+        receiverUsername: newState.receiverUsername,
+        senderID: newState.senderID,
+        senderUsename: newState.senderUsename,
+        firebaseDocumentName: newState.firebaseDocumentName,
+        filesCount: newState.filesCount,
+        sendSpeed: newState.sendSpeed,
+        filesList: newState.filesList,
+        downloadFilesList: newState.downloadFilesList,
+        status: FirebaseSendFileRequestEnum.values[newState.status.index],
+        errorMessage: newState.errorMessage,
         uploadingStatus: FirebaseSendFileUploadingEnum
-            .values[connection['uploadingStatus'] as int],
-        fileTotalSpaceAsKB:
-            double.parse(connection['fileTotalSpaceAsKB'].toString()),
-        fileNowSpaceAsKB:
-            double.parse(connection['fileNowSpaceAsKB'].toString()),
+            .values[newState.uploadingStatus.index],
+        fileTotalSpaceAsKB: newState.fileTotalSpaceAsKB,
+        fileNowSpaceAsKB: newState.fileNowSpaceAsKB,
+        dateTime: newState.dateTime,
       ),
     );
   }
 
   void changeFilesListFilesDownloadEnumAndUpdateFirebaseFilesList() {
-    final filesList = state.filesList;
-    var changedValue = false;
-    for (final file in state.downloadFilesList) {
-      final index = filesList.indexWhere(
-        (item) => item.path == file.path && item.name == file.name,
-      );
-      if (filesList[index].downloadStatus != file.downloadStatus) {
-        final changedFile = filesList[index]
-          ..downloadStatus = file.downloadStatus;
-        filesList[index] = changedFile;
-        changedValue = true;
-      }
-    }
-    if (changedValue) {
-      updateFirebaseFilesList();
-    }
-    emit(state.copyWith(filesList: filesList));
-  }
-
-  bool checkUserID(String userID) {
-    if (userID.isEmpty) {
-      emit(
-        state.copyWith(
-          status: FirebaseSendFileRequestEnum.error,
-          errorMessage: 'User ID is empty',
-        ),
-      );
-      return false;
-    } else if (BlocProvider.of<FirebaseCoreBloc>(
-          NavigationService.navigatorKey.currentContext!,
-        ).getStatus() ==
-        FirebaseCoreStatus.loading) {
-      emit(
-        state.copyWith(
-          status: FirebaseSendFileRequestEnum.error,
-          errorMessage: 'Loading services, please wait and try again',
-        ),
-      );
-      return false;
-    } else if (BlocProvider.of<UserBloc>(
-          NavigationService.navigatorKey.currentContext!,
-        ).getDeviceID() ==
-        userID) {
-      emit(
-        state.copyWith(
-          status: FirebaseSendFileRequestEnum.error,
-          errorMessage: 'You cannot send files to yourself',
-        ),
-      );
-      return false;
-    }
-    return true;
+    sendFileUtils.changeFilesListFilesDownloadEnumAndUpdateFirebaseFilesList(
+        state.filesList, state.downloadFilesList, updateFirebaseFilesList,
+        (filesList) {
+      emit(state.copyWith(filesList: filesList));
+    });
   }
 
   Future<bool> sendConnectRequest(
     String userID,
   ) async {
-    if (checkUserID(userID) == false) {
+    final checkUserIDBool =
+        await sendFileUtils.checkUserID(userID, (requestEnum, errorMessage) {
+      emit(
+        state.copyWith(
+          status: requestEnum,
+          errorMessage: errorMessage,
+        ),
+      );
+    });
+    if (checkUserIDBool == false) {
       return false;
     }
     setStatus(FirebaseSendFileRequestEnum.connecting);
-    if (await FirebaseCore().checkUserIDForIdsCollection(userID) == false) {
-      emit(
-        state.copyWith(
-          status: FirebaseSendFileRequestEnum.error,
-          errorMessage: 'User ID not found',
-        ),
-      );
-      return false;
-    }
+    await setUserSendFileRequest(userID);
+    setStatus(FirebaseSendFileRequestEnum.sendedRequest);
+    return true;
+  }
+
+  Future<void> setUserSendFileRequest(String userID) async {
     final userToken =
         await FirebaseCoreSystem().getUserTokenFromUsersCollection(userID);
     final user = await FirebaseFirestore.instance
@@ -321,30 +317,31 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
     await FirebaseFirestore.instance.collection('users').doc(userToken).update({
       'connectionRequest': userConnectionList,
     });
-    setStatus(FirebaseSendFileRequestEnum.sendedRequest);
-    return true;
   }
 
   void calculateTotalAndNowSpacesInFileList() {
-    var totalSpace = state.fileTotalSpaceAsKB;
-    var nowSpace = state.fileNowSpaceAsKB;
-    for (final file in state.filesList) {
-      totalSpace += double.parse(file.totalBytes);
-      nowSpace += double.parse(file.bytesTransferred);
-    }
-    emit(
-      state.copyWith(
-        fileTotalSpaceAsKB:
-            double.parse((totalSpace / 1024).toStringAsFixed(0)),
-        fileNowSpaceAsKB: double.parse((nowSpace / 1024).toStringAsFixed(0)),
-      ),
-    );
+    sendFileUtils.calculateTotalAndNowSpacesInFileList(
+        state.fileTotalSpaceAsKB, state.fileNowSpaceAsKB, state.filesList,
+        (fileTotalSpaceAsKB, fileNowSpaceAsKB) {
+      emit(
+        state.copyWith(
+          fileTotalSpaceAsKB: fileTotalSpaceAsKB,
+          fileNowSpaceAsKB: fileNowSpaceAsKB,
+        ),
+      );
+    });
   }
 
   Future<void> setFilesListAndPushFirebase(
     List<FirebaseFileModel> filesList,
   ) async {
-    state.filesList = filesList;
+    final newFilesList = filesList;
+    if (ifSenderIDEqualUserID) {
+      state.filesList = sendFileUtils.changeFilesDownloadStatusThePrevious(
+        newFilesList,
+        state.filesList,
+      );
+    }
     await updateFirebaseConnectionsCollection();
   }
 

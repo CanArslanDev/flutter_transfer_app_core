@@ -12,11 +12,12 @@ Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionr
  - Herhangi bir taraf iptal ederse
  - Herhangi bir hata çıkarsa
  - Dosya gönderimindeyken farklı bir kullanıcıdan dosya transferi isteği gelirse ya kabul edemeyecek ya da kabul etmek istiyor musunuz diye yazı çıkacak ve evet der bise bu dosya gönderimi iptal olup ona bağlanacak
- - Dosya gönderiminde iki istek gelindiğinde biri kabul edilip dosya gönderimi başlatıldığında başka biri tarafından yine istek kabul edilirse o bağlantıya bağlanılmayacak.
+ - Dosya gönderiminde iki istek gelindiğinde biri kabul edilip dosya gönderimi başlatıldığında başka biri tarafından yine istek kabul edilirse o bağlantıya bağlanılmayacak. Bu hem gönderen hem alıcı için geçerli.
 
 ## İleriki Zaman İçin
- - Update uyarı sistemi ekleyelim
  - user modelinde ki connectionRequest ve previousConnectionRequest için Model oluşturulacak ve isimleri connectionRequests ve previousConnectionRequests olarak değiştirilecek
+ - Update uyarı sistemi ekleyelim
+ - google analytics ekleyelim
 
 ## Yapılanlar
  - ~~url download enumı değişmesi için liste eklenecek ~~

@@ -1,19 +1,22 @@
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_status_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/download_status_enum.dart';
 
 class FirebaseDownloadFileModel {
   FirebaseDownloadFileModel({
     required this.name,
     required this.path,
+    required this.downloadPath,
     required this.downloadStatus,
   });
   String name;
   String path;
+  String downloadPath;
   FirebaseFileModelDownloadStatus downloadStatus;
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'path': path,
+      'downloadPath': downloadPath,
       'downloadStatus': downloadStatus.index,
     };
   }
@@ -25,6 +28,7 @@ FirebaseDownloadFileModel firebaseDownloadFileModelFromMap(
   return FirebaseDownloadFileModel(
     name: map['name'] as String,
     path: map['path'] as String,
+    downloadPath: map['downloadPath'] as String,
     downloadStatus:
         FirebaseFileModelDownloadStatus.values[map['downloadStatus'] as int],
   );

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 
 class UserLatestConnectionsModel {
@@ -9,6 +10,7 @@ class UserLatestConnectionsModel {
     required this.filesCount,
     required this.filesList,
     required this.fileTotalSpaceAsKB,
+    required this.dateTime,
   });
   String receiverID;
   String receiverUsername;
@@ -17,6 +19,7 @@ class UserLatestConnectionsModel {
   int filesCount;
   List<FirebaseFileModel> filesList;
   double fileTotalSpaceAsKB;
+  Timestamp dateTime;
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,21 +28,24 @@ class UserLatestConnectionsModel {
       'senderID': senderID,
       'senderUsename': senderUsename,
       'filesCount': filesCount,
-      'filesList': filesList,
+      'filesList': firebaseFileModelListToMap(filesList),
       'fileTotalSpaceAsKB': fileTotalSpaceAsKB,
+      'dateTime': dateTime,
     };
   }
 }
 
 UserLatestConnectionsModel userLatestConnectionsModelFromMap(
-    Map<dynamic, dynamic> map) {
+  Map<dynamic, dynamic> map,
+) {
   return UserLatestConnectionsModel(
     receiverID: map['receiverID'] as String,
     receiverUsername: map['receiverUsername'] as String,
     senderID: map['senderID'] as String,
     senderUsename: map['senderUsename'] as String,
     filesCount: map['filesCount'] as int,
-    filesList: map['filesList'] as List<FirebaseFileModel>,
+    filesList: firebaseFileModelListFromMap(map['filesList'] as List<dynamic>),
     fileTotalSpaceAsKB: map['fileTotalSpaceAsKB'] as double,
+    dateTime: map['dateTime'] as Timestamp,
   );
 }

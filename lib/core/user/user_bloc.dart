@@ -59,25 +59,70 @@ class UserBloc extends Cubit<UserModel> {
     }
   }
 
+  void listUnionLatestConnectionsInState(
+    UserLatestConnectionsModel latestConnectionsModel,
+  ) {
+    final newLatestConnections = state.latestConnections;
+    final index = state.latestConnections.indexWhere(
+      (item) =>
+          item.senderUsename == latestConnectionsModel.senderUsename &&
+          item.senderID == latestConnectionsModel.senderID &&
+          item.receiverID == latestConnectionsModel.receiverID &&
+          item.receiverUsername == latestConnectionsModel.receiverUsername &&
+          item.dateTime == latestConnectionsModel.dateTime,
+    );
+    if (index != -1) {
+      newLatestConnections[index] = latestConnectionsModel;
+    } else {
+      newLatestConnections.add(latestConnectionsModel);
+    }
+    emit(state.copyWith(latestConnections: newLatestConnections));
+  }
+
+  Future<void> sendFirebaseLatestConnectionsList() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(state.token)
+        .update({
+      'latestConnections':
+          convertLatestConnectionsListToMap(state.latestConnections),
+    });
+  }
+
   List<UserLatestConnectionsModel> convertLatestConnectionsListFromMap(
-      List<dynamic> latestConnectionsList) {
+    List<dynamic> latestConnectionsList,
+  ) {
     final latestConnections = <UserLatestConnectionsModel>[];
     for (final latestConnectionsData in latestConnectionsList) {
       latestConnections.add(
         userLatestConnectionsModelFromMap(
-            latestConnectionsData as Map<dynamic, dynamic>),
+          latestConnectionsData as Map<dynamic, dynamic>,
+        ),
       );
     }
     return latestConnections;
   }
 
   List<Map<dynamic, dynamic>> convertLatestConnectionsListToMap(
-      List<UserLatestConnectionsModel> latestConnectionsList) {
+    List<UserLatestConnectionsModel> latestConnectionsList,
+  ) {
     final latestConnections = <Map<dynamic, dynamic>>[];
     for (final latestConnectionsData in latestConnectionsList) {
       latestConnections.add(latestConnectionsData.toMap());
     }
     return latestConnections;
+  }
+
+  Future<void> setLatestConnectionsListAndSendFirebase(
+    UserLatestConnectionsModel latestConnectionsModel,
+  ) async {
+    state.latestConnections.add(latestConnectionsModel);
+    final DocumentReference reference =
+        FirebaseFirestore.instance.collection('users').doc(state.token);
+    await reference.update({
+      'latestConnections':
+          convertLatestConnectionsListToMap(state.latestConnections),
+    });
   }
 
   void listenUserDataFromFirebase() {
@@ -96,10 +141,11 @@ class UserBloc extends Cubit<UserModel> {
         BlocProvider.of<FirebaseSendFileBloc>(
           NavigationService.navigatorKey.currentContext!,
         ).setConnection(
-            connectedUser['userID'] as String,
-            connectedUser['username'] as String,
-            state.deviceID,
-            state.username);
+          connectedUser['userID'] as String,
+          connectedUser['username'] as String,
+          state.deviceID,
+          state.username,
+        );
         await BlocProvider.of<FirebaseSendFileBloc>(
           NavigationService.navigatorKey.currentContext!,
         ).listenConnection();
@@ -113,18 +159,22 @@ class UserBloc extends Cubit<UserModel> {
       emit(
         state.copyWith(
           latestConnections: convertLatestConnectionsListFromMap(
-              userFirebaseData['latestConnections'] as List<dynamic>),
+            userFirebaseData['latestConnections'] as List<dynamic>,
+          ),
           connectionRequest: convertConnectionRequestListToMap(
-              userFirebaseData['previousConnectionRequest'] as List<dynamic>),
+            userFirebaseData['connectionRequest'] as List<dynamic>,
+          ),
           previousConnectionRequest: convertPreviousConnectionRequestListToMap(
-              userFirebaseData['previousConnectionRequest'] as List<dynamic>),
+            userFirebaseData['previousConnectionRequest'] as List<dynamic>,
+          ),
         ),
       );
     });
   }
 
   List<Map<dynamic, dynamic>> convertConnectionRequestListToMap(
-      List<dynamic> connectionRequestList) {
+    List<dynamic> connectionRequestList,
+  ) {
     final connectionRequest = <Map<dynamic, dynamic>>[];
     for (final connectionRequestData in connectionRequestList) {
       connectionRequest.add(connectionRequestData as Map<dynamic, dynamic>);
