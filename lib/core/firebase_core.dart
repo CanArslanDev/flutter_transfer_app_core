@@ -123,7 +123,7 @@ class FirebaseCore {
       'token': deviceToken,
       'expiration': expiration,
       'userPlatformDetails': userPlatformDetails,
-      'availableCloudStorageMB': BlocProvider.of<FirebaseCoreBloc>(
+      'availableCloudStorageKB': BlocProvider.of<FirebaseCoreBloc>(
         NavigationService.navigatorKey.currentContext!,
       ).getDefaulStorageMB(),
     };

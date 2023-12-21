@@ -15,6 +15,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/service/file_picker_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
 
@@ -87,11 +88,12 @@ class TestPage extends StatelessWidget {
                 Text('device id: ${userState.deviceID}'),
                 Text('expiration: ${userState.expiration}'),
                 Text(
-                  '''availableCloudStorageMB: ${userState.availableCloudStorageMB}''',
+                  '''availableCloudStorageKB: ${userState.availableCloudStorageKB}
+                  type ${FilePickerService().getFileSizeFromBytes((userState.availableCloudStorageKB * 1024).toInt(), 2)}}''',
                 ),
                 Text('userPlatformDetails: ${userState.userPlatformDetails}'),
                 Text(
-                  '''defaultCloudStorageMB: ${coreState.defaultCloudStorageMB}''',
+                  '''defaultCloudStorageKB: ${coreState.defaultCloudStorageKB}''',
                 ),
                 ElevatedButton(
                   onPressed: () {

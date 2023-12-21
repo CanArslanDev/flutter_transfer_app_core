@@ -6,7 +6,7 @@ class FirebaseCoreBloc extends Cubit<FirebaseCoreModel> {
   FirebaseCoreBloc()
       : super(
           FirebaseCoreModel(
-            defaultCloudStorageMB: 0,
+            defaultCloudStorageKB: 0,
             status: FirebaseCoreStatus.uninitialized,
           ),
         );
@@ -16,8 +16,8 @@ class FirebaseCoreBloc extends Cubit<FirebaseCoreModel> {
   ) {
     emit(
       state.copyWith(
-        defaultCloudStorageMB:
-            double.parse(modelMap!['defaultCloudStorageMB'].toString()),
+        defaultCloudStorageKB:
+            double.parse(modelMap!['defaultCloudStorageKB'].toString()),
       ),
     );
   }
@@ -35,6 +35,6 @@ class FirebaseCoreBloc extends Cubit<FirebaseCoreModel> {
   }
 
   double getDefaulStorageMB() {
-    return state.defaultCloudStorageMB;
+    return state.defaultCloudStorageKB;
   }
 }

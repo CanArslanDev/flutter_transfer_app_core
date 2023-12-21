@@ -8,6 +8,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/do
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/file_picker_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
 
@@ -45,6 +46,11 @@ class CoreFirebaseStorage {
     final fileName =
         await changeFileNameWithAddTimestamp(file.path.split('/').last);
     final fileSize = FilePickerService().getFileSize(file.path, 1);
+    unawaited(
+      BlocProvider.of<UserBloc>(
+        NavigationService.navigatorKey.currentContext!,
+      ).decreaseUserCloudStorageAndSendFirebase(file.lengthSync() / 1024),
+    );
     final fileModel = FirebaseFileModel(
       name: fileName,
       bytesTransferred: '0',

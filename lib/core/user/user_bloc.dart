@@ -14,7 +14,7 @@ class UserBloc extends Cubit<UserModel> {
             deviceID: '',
             userPlatformDetails: {},
             expiration: Timestamp.now(),
-            availableCloudStorageMB: 0,
+            availableCloudStorageKB: 0,
             token: '',
             connectionRequest: [],
             previousConnectionRequest: [],
@@ -45,8 +45,8 @@ class UserBloc extends Cubit<UserModel> {
           expiration: modelMap['expiration'] as Timestamp,
           userPlatformDetails:
               modelMap['userPlatformDetails'] as Map<String, dynamic>,
-          availableCloudStorageMB:
-              double.parse(modelMap['availableCloudStorageMB'].toString()),
+          availableCloudStorageKB:
+              double.parse(modelMap['availableCloudStorageKB'].toString()),
           token: modelMap['token'] as String,
           latestConnections:
               convertLatestConnectionsListFromMap(latestConnections),
@@ -169,6 +169,23 @@ class UserBloc extends Cubit<UserModel> {
           ),
         ),
       );
+    });
+  }
+
+  Future<void> decreaseUserCloudStorageAndSendFirebase(
+      double fileSizeKB) async {
+    final newAvailableCloudStorageKB = state.availableCloudStorageKB -
+        double.parse(fileSizeKB.toStringAsFixed(0));
+
+    emit(
+      state.copyWith(
+        availableCloudStorageKB: newAvailableCloudStorageKB,
+      ),
+    );
+    final DocumentReference reference =
+        FirebaseFirestore.instance.collection('users').doc(state.token);
+    await reference.update({
+      'availableCloudStorageKB': state.availableCloudStorageKB,
     });
   }
 

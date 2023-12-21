@@ -6,7 +6,7 @@ class UserModel {
     required this.deviceID,
     required this.userPlatformDetails,
     required this.expiration,
-    required this.availableCloudStorageMB,
+    required this.availableCloudStorageKB,
     required this.token,
     required this.connectionRequest,
     required this.previousConnectionRequest,
@@ -17,7 +17,7 @@ class UserModel {
   String deviceID;
   Map<String, dynamic> userPlatformDetails;
   Timestamp expiration;
-  double availableCloudStorageMB;
+  double availableCloudStorageKB;
   String token;
   List<Map<dynamic, dynamic>> connectionRequest;
   List<Map<dynamic, dynamic>> previousConnectionRequest;
@@ -29,7 +29,7 @@ class UserModel {
     String? deviceID,
     Map<String, dynamic>? userPlatformDetails,
     Timestamp? expiration,
-    double? availableCloudStorageMB,
+    double? availableCloudStorageKB,
     String? token,
     List<Map<dynamic, dynamic>>? connectionRequest,
     List<Map<dynamic, dynamic>>? previousConnectionRequest,
@@ -41,8 +41,8 @@ class UserModel {
       deviceID: deviceID ?? this.deviceID,
       userPlatformDetails: userPlatformDetails ?? this.userPlatformDetails,
       expiration: expiration ?? this.expiration,
-      availableCloudStorageMB:
-          availableCloudStorageMB ?? this.availableCloudStorageMB,
+      availableCloudStorageKB:
+          availableCloudStorageKB ?? this.availableCloudStorageKB,
       token: token ?? this.token,
       connectionRequest: connectionRequest ?? this.connectionRequest,
       previousConnectionRequest:

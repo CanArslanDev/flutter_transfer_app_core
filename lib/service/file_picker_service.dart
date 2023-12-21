@@ -15,12 +15,19 @@ class FilePickerService {
     }
   }
 
-  String getFileSize(String filepath, int decimals) {
+  String getFileSize(String filepath, int decimalsByte) {
     final file = File(filepath);
     final bytes = file.lengthSync();
     if (bytes <= 0) return '0 B';
     const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     final i = (log(bytes) / log(1024)).floor();
-    return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
+    return '${(bytes / pow(1024, i)).toStringAsFixed(decimalsByte)} ${suffixes[i]}';
+  }
+
+  String getFileSizeFromBytes(int bytes, int decimalsByte) {
+    if (bytes <= 0) return '0 B';
+    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    final i = (log(bytes) / log(1024)).floor();
+    return '${(bytes / pow(1024, i)).toStringAsFixed(decimalsByte)} ${suffixes[i]}';
   }
 }

@@ -2,19 +2,19 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 
 class FirebaseCoreModel {
   FirebaseCoreModel({
-    required this.defaultCloudStorageMB,
+    required this.defaultCloudStorageKB,
     required this.status,
   });
-  double defaultCloudStorageMB;
+  double defaultCloudStorageKB;
   FirebaseCoreStatus status = FirebaseCoreStatus.stable;
 
   FirebaseCoreModel copyWith({
-    double? defaultCloudStorageMB,
+    double? defaultCloudStorageKB,
     FirebaseCoreStatus? status,
   }) {
     return FirebaseCoreModel(
-      defaultCloudStorageMB:
-          defaultCloudStorageMB ?? this.defaultCloudStorageMB,
+      defaultCloudStorageKB:
+          defaultCloudStorageKB ?? this.defaultCloudStorageKB,
       status: status ?? this.status,
     );
   }

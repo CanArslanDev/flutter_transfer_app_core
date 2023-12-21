@@ -1,0 +1,18 @@
+{
+    "files.exclude": {
+        "android": true,
+        "build": true,
+        ".vscode": true,
+        ".dart_tool": true,
+        "ios": true,
+        "macos": true,
+        ".flutter-plugins": true,
+        ".flutter-plugins-dependencies": true,
+        ".gitignore": true,
+        ".gitattributes": true,
+        "analysis_options.yaml": true,
+        "flutter_fast_transfer_firebase_core.iml": true,
+        "pubspec.lock": true,
+        "pubspec.yaml": true
+    }
+}
