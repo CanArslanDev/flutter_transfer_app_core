@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file/download_file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_request_enum.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_uploading_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 
 class FirebaseSendFileUtils {
   void changeFilesListFilesDownloadEnumAndUpdateFirebaseFilesList(
@@ -109,5 +112,25 @@ class FirebaseSendFileUtils {
       }
     }
     return returnFilesList;
+  }
+
+  FirebaseSendFileModel getDefaultModel() {
+    return FirebaseSendFileModel(
+      receiverID: '',
+      receiverUsername: '',
+      senderID: '',
+      senderUsename: '',
+      firebaseDocumentName: '',
+      filesCount: 0,
+      sendSpeed: '0',
+      filesList: [],
+      downloadFilesList: [],
+      status: FirebaseSendFileRequestEnum.stable,
+      errorMessage: '',
+      uploadingStatus: FirebaseSendFileUploadingEnum.stable,
+      fileTotalSpaceAsKB: 0,
+      fileNowSpaceAsKB: 0,
+      dateTime: Timestamp.fromDate(DateTime.now()), //for a tenporary
+    );
   }
 }

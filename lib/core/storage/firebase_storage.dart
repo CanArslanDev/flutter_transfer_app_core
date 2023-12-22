@@ -9,8 +9,8 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/file_mod
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/file_picker_service.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/file_picker_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 
 class CoreFirebaseStorage {
   final storageRef = FirebaseStorage.instance;

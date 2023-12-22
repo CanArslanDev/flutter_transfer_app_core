@@ -8,7 +8,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/fire
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 
 class FirebaseCoreSystem {

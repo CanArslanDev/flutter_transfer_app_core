@@ -15,8 +15,8 @@ import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/file_picker_service.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/file_picker_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
 
 class TestPage extends StatelessWidget {

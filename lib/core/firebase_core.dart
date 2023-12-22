@@ -11,7 +11,7 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/fire
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/status_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ntp/ntp.dart';
 
@@ -134,9 +134,10 @@ class FirebaseCore {
     String connectionID,
     Map<dynamic, dynamic> connectionData,
   ) async {
-    final userModel = BlocProvider.of<UserBloc>(
+    final user = BlocProvider.of<UserBloc>(
       NavigationService.navigatorKey.currentContext!,
-    ).getModel();
+    );
+    final userModel = user.getModel();
     final connectedUserReceiver = {
       'token': userModel.token,
       'userID': userModel.deviceID,
@@ -158,12 +159,7 @@ class FirebaseCore {
     await BlocProvider.of<FirebaseSendFileBloc>(
       NavigationService.navigatorKey.currentContext!,
     ).setFirebaseConnectionsCollection();
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userModel.token)
-        .update({
-      'connectedUser': connectedUserSender,
-    });
+    await user.updateFirebaseConnectedUser(connectedUserSender);
     await FirebaseFirestore.instance
         .collection('users')
         .doc(connectionData['requestUserDeviceToken'] as String)

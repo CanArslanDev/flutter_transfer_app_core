@@ -5,7 +5,7 @@ import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/latest_connections_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/service/navigation_service.dart';
+import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 
 class UserBloc extends Cubit<UserModel> {
   UserBloc()
@@ -132,6 +132,7 @@ class UserBloc extends Cubit<UserModel> {
       final userFirebaseData = querySnapshot.data()! as Map<dynamic, dynamic>;
       final connectedUser =
           userFirebaseData['connectedUser'] as Map<dynamic, dynamic>;
+
       if (connectedUser['token'] != '' &&
           connectedUser['userID'] != '' &&
           connectedUser['username'] != '' &&
@@ -158,6 +159,7 @@ class UserBloc extends Cubit<UserModel> {
       }
       emit(
         state.copyWith(
+          connectedUser: connectedUser,
           latestConnections: convertLatestConnectionsListFromMap(
             userFirebaseData['latestConnections'] as List<dynamic>,
           ),
@@ -169,6 +171,16 @@ class UserBloc extends Cubit<UserModel> {
           ),
         ),
       );
+    });
+  }
+
+  Future<void> updateFirebaseConnectedUser(
+      Map<String, String> connectedUser) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(state.token)
+        .update({
+      'connectedUser': connectedUser,
     });
   }
 
