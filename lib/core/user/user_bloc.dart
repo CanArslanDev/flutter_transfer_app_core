@@ -175,7 +175,8 @@ class UserBloc extends Cubit<UserModel> {
   }
 
   Future<void> updateFirebaseConnectedUser(
-      Map<String, String> connectedUser) async {
+    Map<String, String> connectedUser,
+  ) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(state.token)
@@ -185,7 +186,8 @@ class UserBloc extends Cubit<UserModel> {
   }
 
   Future<void> decreaseUserCloudStorageAndSendFirebase(
-      double fileSizeKB) async {
+    double fileSizeKB,
+  ) async {
     final newAvailableCloudStorageKB = state.availableCloudStorageKB -
         double.parse(fileSizeKB.toStringAsFixed(0));
 

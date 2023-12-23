@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file/download_file_model.dart';
@@ -141,8 +140,14 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
     if (mapState['senderID'] == '' &&
         mapState['receiverID'] == '' &&
         state.senderID != '' &&
-        state.receiverID != '') {
+        state.receiverID != '' &&
+        (sendFileLeaveConnection.exitedConnection ==
+            mapState['exitedConnection'] as bool)) {
       await leaveConnection();
+    } else {
+      if (sendFileLeaveConnection.exitedConnection != true) {
+        sendFileLeaveConnection.exitedConnection = true;
+      }
     }
   }
 

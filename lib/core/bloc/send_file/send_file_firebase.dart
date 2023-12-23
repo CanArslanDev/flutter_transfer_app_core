@@ -35,12 +35,10 @@ class FirebaseSendFileFirebase {
   }
 
   Future<void> updateFirebaseConnectionsCollection(
-    FirebaseSendFileModel state,
-  ) async {
-    await FirebaseFirestore.instance
-        .collection('connections')
-        .doc(state.firebaseDocumentName)
-        .update({
+    FirebaseSendFileModel state, {
+    bool? leaveConnection,
+  }) async {
+    final updateMap = {
       'receiverID': state.receiverID,
       'receiverUsername': state.receiverUsername,
       'senderID': state.senderID,
@@ -57,7 +55,17 @@ class FirebaseSendFileFirebase {
       'fileTotalSpaceAsKB': state.fileTotalSpaceAsKB,
       'fileNowSpaceAsKB': state.fileNowSpaceAsKB,
       'dateTime': state.dateTime,
-    });
+    };
+
+    if (leaveConnection != null) {
+      updateMap.addAll({
+        'exitedConnection': true,
+      });
+    }
+    await FirebaseFirestore.instance
+        .collection('connections')
+        .doc(state.firebaseDocumentName)
+        .update(updateMap);
   }
 
   Future<void> updateFirebaseDownloadFilesList(
@@ -85,7 +93,9 @@ class FirebaseSendFileFirebase {
   }
 
   Future<void> updateUserConnectionRequest(
-      String userToken, List<dynamic> userConnectionList) async {
+    String userToken,
+    List<dynamic> userConnectionList,
+  ) async {
     await FirebaseFirestore.instance.collection('users').doc(userToken).update({
       'connectionRequest': userConnectionList,
     });

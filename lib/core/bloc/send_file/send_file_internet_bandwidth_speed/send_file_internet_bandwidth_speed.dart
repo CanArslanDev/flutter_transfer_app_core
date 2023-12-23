@@ -35,7 +35,7 @@ class SendFileInternetBandwidthSpeed {
       'PB/s',
       'EB/s',
       'ZB/s',
-      'YB/s'
+      'YB/s',
     ];
     final i = (log(bytes) / log(1024)).floor();
     return '''${(bytes / pow(1024, i)).toStringAsFixed(decimalsByte)} ${suffixes[i]}''';

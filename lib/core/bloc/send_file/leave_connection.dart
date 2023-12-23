@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_request_enum.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_firebase.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_utils.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 
 class FirebaseSendFileLeaveConnection {
+  bool exitedConnection = false;
   Future<void> leaveCurrentConnection() async {
     final sendFileBloc = BlocProvider.of<FirebaseSendFileBloc>(
       NavigationService.navigatorKey.currentContext!,
@@ -31,7 +30,10 @@ class FirebaseSendFileLeaveConnection {
     sendFileBloc.setModel(defaultModel);
     await sendFileBloc
         .getSendFileFirebase()
-        .updateFirebaseConnectionsCollection(defaultModel);
+        .updateFirebaseConnectionsCollection(
+          defaultModel,
+          leaveConnection: true,
+        );
 
     await sendFileBloc.getSendFileFirebase().disposeListenConnection();
   }

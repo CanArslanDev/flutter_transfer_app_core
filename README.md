@@ -6,10 +6,10 @@
 Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionrequestlerde aynı kişiden fazla request geldiğinde silinme işlemini timestampe göre yaparak birden fazla aynı anda requested silinmesininde önüne geçilmiş olacak
  - constants.dart dosyası oluşturulup içine cloud storage files klasörü gibi yerler girilecek
 
-## connection conditionları
- - Herhangi bir taraf bağlantıdan çıkarsa
+## connection conditionları (kalanlar opsiyonel ileride yapılabilir)
+ - ~~Herhangi bir taraf bağlantıdan çıkarsa~~
  - Herhangi bir tarafın uygulaması kapanırsa (düşünülebilir)
- - Herhangi bir taraf iptal ederse
+ - ~~Herhangi bir taraf iptal ederse~~
  - Herhangi bir hata çıkarsa
  - Dosya gönderimindeyken farklı bir kullanıcıdan dosya transferi isteği gelirse ya kabul edemeyecek ya da kabul etmek istiyor musunuz diye yazı çıkacak ve evet der bise bu dosya gönderimi iptal olup ona bağlanacak
  - Dosya gönderiminde iki istek gelindiğinde biri kabul edilip dosya gönderimi başlatıldığında başka biri tarafından yine istek kabul edilirse o bağlantıya bağlanılmayacak. Bu hem gönderen hem alıcı için geçerli.

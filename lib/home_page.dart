@@ -18,6 +18,7 @@ import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/services/file_picker_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 import 'package:flutter_fast_transfer_firebase_core/utils/multi_3_bloc_builder.dart';
+import 'package:flutter_fast_transfer_firebase_core/utils/receive_top_bar.dart';
 
 class TestPage extends StatelessWidget {
   const TestPage({super.key});
@@ -36,6 +37,7 @@ class TestPage extends StatelessWidget {
           FloatingActionButton(
             heroTag: '2',
             onPressed: () async {
+              InAppNotifications.receiveTopBar();
               // final file = await HttpService().downloadFile(
               //     'https://firebasestorage.googleapis.com/v0/b/flutter-fast-transfer.appspot.com/o/files%2F115607-910721%2Fsender%2Ftest1Mb-1702883061.db?alt=media&token=6dd144cd-e2ae-4e35-9744-90fe06ac24ca',
               //     '1.db',);
@@ -88,8 +90,10 @@ class TestPage extends StatelessWidget {
                 Text('device id: ${userState.deviceID}'),
                 Text('expiration: ${userState.expiration}'),
                 Text(
-                  '''availableCloudStorageKB: ${userState.availableCloudStorageKB}
-                  type ${FilePickerService().getFileSizeFromBytes((userState.availableCloudStorageKB * 1024).toInt(), 2)}}''',
+                  '''availableCloudStorageKB: ${userState.availableCloudStorageKB}''',
+                ),
+                Text(
+                  '''type ${FilePickerService().getFileSizeFromBytes((userState.availableCloudStorageKB * 1024).toInt(), 2)}}''',
                 ),
                 Text('userPlatformDetails: ${userState.userPlatformDetails}'),
                 Text(

@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/leave_connection.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_firebase.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_utils.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/storage/firebase_storage.dart';
 import 'package:flutter_fast_transfer_firebase_core/services/file_picker_service.dart';
-import 'package:flutter_fast_transfer_firebase_core/services/navigation_service.dart';
 
 class ConnectionPage extends StatelessWidget {
   const ConnectionPage({super.key});
