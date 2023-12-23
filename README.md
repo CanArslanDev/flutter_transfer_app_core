@@ -7,6 +7,8 @@
  - Connection requester 5 dakikadan sonra kabul edilemeyecek, ve kullanıcı uygulamayı kapadıysa da kabul edilemeyecek
 Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionrequestlerde aynı kişiden fazla request geldiğinde silinme işlemini timestampe göre yaparak birden fazla aynı anda requested silinmesininde önüne geçilmiş olacak
  - constants.dart dosyası oluşturulup içine cloud storage files klasörü gibi yerler girilecek
+ - uygulama min sdk 20 olacak (build.gradle),
+ - info.plist [buradakiler](https://pub.dev/packages/qr_code_scanner) eklenecek
 
 ## connection conditionları (kalanlar opsiyonel ileride yapılabilir)
  - ~~Herhangi bir taraf bağlantıdan çıkarsa~~
