@@ -20,7 +20,7 @@ Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionr
 ## İleriki Zaman İçin
  - user model için tomap ve formap user modele taşınacak
  - user bloc içinde ki firebase ayrı bir dosyaya taşınacak
- - user modelinde ki connectionRequest, connectedUser ve previousConnectionRequest için Model oluşturulacak ve isimleri connectionRequests ve previousConnectionRequests olarak değiştirilecek
+ - user modelinde ki connectionRequest, connectedUser ve previousConnectionRequest için Model oluşturulacak ve isimleri connectionRequests ve previousConnectionRequests olarak değiştirilecek, connectionRequest model oluşturulduktan sonra acceptRequest fonksiyonunda ki map model ile değiştirilecek.
  - Update uyarı sistemi ekleyelim
  - google analytics ekleyelim
 
