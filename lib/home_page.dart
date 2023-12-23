@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/connection_page.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_network/core_network.dart';
-import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/core_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/firebase_core/firebase_core_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/enums/send_file_request_enum.dart';
@@ -13,6 +11,8 @@ import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_fil
 import 'package:flutter_fast_transfer_firebase_core/core/firebase_core.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/user/user_model.dart';
+import 'package:flutter_fast_transfer_firebase_core/pages/qr_pages/qr_scanner_page.dart';
+import 'package:flutter_fast_transfer_firebase_core/pages/qr_pages/qr_show_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/receive_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/send_page.dart';
 import 'package:flutter_fast_transfer_firebase_core/services/file_picker_service.dart';
@@ -106,16 +106,26 @@ class TestPage extends StatelessWidget {
                   child: const Text('Initialize Core'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    debugPrint(FirebaseCoreSystem().createRandomUserID());
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (context) => const QRShowPage(),
+                      ),
+                    );
                   },
-                  child: const Text('create user id (print)'),
+                  child: const Text('go to qr show page'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await FirebaseCoreNetwork().initialize();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (context) => const QRScannerPage(),
+                      ),
+                    );
                   },
-                  child: const Text('initalize core network'),
+                  child: const Text('go to qr scanner page'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

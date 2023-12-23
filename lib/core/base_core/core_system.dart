@@ -94,10 +94,19 @@ class FirebaseCoreSystem {
     final deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       final build = await deviceInfoPlugin.androidInfo;
+      final buildVersion = {
+        'baseOS': build.version.baseOS,
+        'sdkInt': build.version.sdkInt,
+        'release': build.version.release,
+        'codename': build.version.codename,
+        'incremental': build.version.incremental,
+        'previewSdkInt': build.version.previewSdkInt,
+        'securityPatch': build.version.securityPatch,
+      };
       return {
         'id': build.id,
         'name': build.device,
-        'version': build.version.toString(),
+        'version': buildVersion.toString(),
         'brand': build.brand,
         'model': build.model,
       };

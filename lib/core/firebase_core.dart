@@ -130,10 +130,31 @@ class FirebaseCore {
     await _firebase.collection('users').doc(userID).set(userData);
   }
 
+  String getConnectionDataForQRConnectionRequest() {
+    final userBloc = BlocProvider.of<UserBloc>(
+      NavigationService.navigatorKey.currentContext!,
+    );
+    final deviceID = userBloc.getDeviceID();
+    final username = userBloc.getUsername();
+    final token = userBloc.getToken();
+    return '''{"connectionID":"$deviceID", "username": "$username", "requestUserDeviceToken": "$token"}''';
+  }
+
+  Future<void> acceptUserConnectionRequestFromQR(
+    Map<String, dynamic> qrMap,
+  ) async {
+    await acceptUserConnectionRequest(qrMap['connectionID']! as String, qrMap);
+  }
+
   Future<void> acceptUserConnectionRequest(
     String connectionID,
     Map<dynamic, dynamic> connectionData,
   ) async {
+    await FirebaseCoreSystem()
+        .setUserRemoveConnectionRequestAndAddPreviousConnectionRequest(
+      connectionID,
+      connectionData,
+    );
     final user = BlocProvider.of<UserBloc>(
       NavigationService.navigatorKey.currentContext!,
     );

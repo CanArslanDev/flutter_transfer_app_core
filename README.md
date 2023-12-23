@@ -7,8 +7,6 @@
  - Connection requester 5 dakikadan sonra kabul edilemeyecek, ve kullanıcı uygulamayı kapadıysa da kabul edilemeyecek
 Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionrequestlerde aynı kişiden fazla request geldiğinde silinme işlemini timestampe göre yaparak birden fazla aynı anda requested silinmesininde önüne geçilmiş olacak
  - constants.dart dosyası oluşturulup içine cloud storage files klasörü gibi yerler girilecek
- - uygulama min sdk 20 olacak (build.gradle),
- - info.plist [buradakiler](https://pub.dev/packages/qr_code_scanner) eklenecek
 
 ## connection conditionları (kalanlar opsiyonel ileride yapılabilir)
  - ~~Herhangi bir taraf bağlantıdan çıkarsa~~
@@ -20,7 +18,7 @@ Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionr
 ## İleriki Zaman İçin
  - user model için tomap ve formap user modele taşınacak
  - user bloc içinde ki firebase ayrı bir dosyaya taşınacak
- - user modelinde ki connectionRequest, connectedUser ve previousConnectionRequest için Model oluşturulacak ve isimleri connectionRequests ve previousConnectionRequests olarak değiştirilecek, connectionRequest model oluşturulduktan sonra acceptRequest fonksiyonunda ki map model ile değiştirilecek.
+ - user modelinde ki connectionRequest, connectedUser ve previousConnectionRequest için Model oluşturulacak ve isimleri connectionRequests ve previousConnectionRequests olarak değiştirilecek
  - Update uyarı sistemi ekleyelim
  - google analytics ekleyelim
 
