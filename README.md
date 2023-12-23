@@ -2,6 +2,7 @@
 ## Yapılacaklar
  - kullanıcı dosya transferindeyken connectiondan çıkamıyor
  - Kullanıcının telefonda ve veri tabanında depolama alanı yeri olup olmadığı kontrol edilip dosyalar öyle eklenebilecek (transfer esnasında)
+ - qr code sayfası açıldığında yukarıdan (inappnotificationsdan) connection request snackbarı gelmeyecek
  - Connection requester 5 dakikadan sonra kabul edilemeyecek, ve kullanıcı uygulamayı kapadıysa da kabul edilemeyecek
 Timestamp kullanılarak yapılacak, ve timestamp kullanıldığında connectionrequestlerde aynı kişiden fazla request geldiğinde silinme işlemini timestampe göre yaparak birden fazla aynı anda requested silinmesininde önüne geçilmiş olacak
  - constants.dart dosyası oluşturulup içine cloud storage files klasörü gibi yerler girilecek
