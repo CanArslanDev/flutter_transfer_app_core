@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/base_core/core_system.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/download_file/download_file_model.dart';
@@ -44,6 +45,7 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
   final internetBandwidthSpeed = SendFileInternetBandwidthSpeed();
   final sendFileFirebase = FirebaseSendFileFirebase();
   final sendFileLeaveConnection = FirebaseSendFileLeaveConnection();
+  bool openedLeaveAlertDialog = false;
   void setConnection(
     String receiverID,
     String receiverUsername,
@@ -121,6 +123,7 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
     await sendFileFirebase.listenConnection(
       state.firebaseDocumentName,
       (querySnapshot) async {
+        await controlLeaveConnection(querySnapshot);
         getFirebaseConnectionsCollection(querySnapshot);
         if (ifSenderIDEqualUserID) {
           changeFilesListFilesDownloadEnumAndUpdateFirebaseFilesList();
@@ -129,6 +132,18 @@ class FirebaseSendFileBloc extends Cubit<FirebaseSendFileModel> {
         }
       },
     );
+  }
+
+  Future<void> controlLeaveConnection(
+    DocumentSnapshot<Object?> querySnapshot,
+  ) async {
+    final mapState = querySnapshot.data()! as Map<dynamic, dynamic>;
+    if (mapState['senderID'] == '' &&
+        mapState['receiverID'] == '' &&
+        state.senderID != '' &&
+        state.receiverID != '') {
+      await leaveConnection();
+    }
   }
 
   bool get ifSenderIDEqualUserID =>

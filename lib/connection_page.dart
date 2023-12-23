@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/leave_connection.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_bloc.dart';
+import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_firebase.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_model.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/bloc/send_file/send_file_utils.dart';
 import 'package:flutter_fast_transfer_firebase_core/core/storage/firebase_storage.dart';
@@ -22,7 +24,8 @@ class ConnectionPage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_rounded),
             onPressed: () async {
-              await _showExitConfirmationDialog(context);
+              await FirebaseSendFileLeaveConnection()
+                  .leaveConnectionAlertDialog(context);
             },
           ),
         ),
@@ -74,36 +77,6 @@ class ConnectionPage extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  Future<void> _showExitConfirmationDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Çıkmak İster Misiniz?'),
-          content: Text('Emin misiniz?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Hayır'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                await BlocProvider.of<FirebaseSendFileBloc>(
-                  context,
-                ).leaveConnection();
-              },
-              child: Text('Evet'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
